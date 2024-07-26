@@ -57,3 +57,8 @@ a.dropdown-item {
     left: -50px !important;
     padding: 10px 10px;
 }
+span.dropdown-item {
+    font-size: 14px;
+    left: -50px !important;
+    padding: 10px 10px;
+}

@@ -38,6 +38,10 @@ class MenuSide extends Component<MenuSideProps, MenuSideState> {
                     <NavItem path="/convertText" itemName="Chuyển đổi text" icon={<i className="nav-icon fa-solid fa-font"></i>} />
                     <NavItem path="/tudiendich" itemName="Từ điển dịch" icon={<i className="nav-icon fa-solid fa-shuffle"></i>} />
                     <NavItem path="/pdfGiaotrinh" itemName="Giáo trình PDF" icon={<i className="nav-icon fa-solid fa-file-pdf"></i>} />
+                    <NavItem path="/hanzi" itemName="Từ điển Hanzi" icon={<i className="nav-icon fa-solid fa-language"></i>} />
+                    <NavItem path="/jiaocheng" itemName="TKPS Gia Ngôn Lục" icon={<i className="nav-icon fa-solid fa-book-journal-whills"></i>} />
+                    <NavItem path="/stickynote" itemName="Sticky Notes" icon={<i className="nav-icon fa-solid fa-file-pen"></i>} />
+                
                 </div>
             );
         }
@@ -55,10 +59,10 @@ class MenuSide extends Component<MenuSideProps, MenuSideState> {
                         <ul className="menuSide-nav">
                             <NavItem path="/" itemName="Bảng tin" icon={<i className="nav-icon fa-solid fa-newspaper"></i>} />
                             <NavItem path="/dichthuat" itemName="Dịch Thuật" icon={<i className="nav-icon fa-solid fa-house"></i>} />
-                            <NavItem path="/stickynote" itemName="Sticky Notes" icon={<i className="nav-icon fa-solid fa-file-pen"></i>} />
+                           
                             <NavItem path="/nhidonghocphat" itemName="Nhi đồng học Phật" icon={<i className="nav-icon fa-solid fa-earth-americas"></i>} />
-                            <NavItem path="/hanzi" itemName="Từ điển Hanzi" icon={<i className="nav-icon fa-solid fa-language"></i>} />
-                            <NavItem path="/jiaocheng" itemName="TKPS Gia Ngôn Lục" icon={<i className="nav-icon fa-solid fa-book-journal-whills"></i>} />
+                            <NavItem path="/tddkkc" itemName="Tịnh Độ Đại Kinh" icon={<i className="nav-icon fa-solid fa-book"></i>} />
+                           
 
                             <li className='menuSide-it-asset' onClick={this.viewItem}>
                                 <a className='nav-link'>

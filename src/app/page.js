@@ -46,6 +46,7 @@ class Dashboard extends Component {
         const myUser = localStorage.getItem("user");
         const MyUserName = localStorage.getItem("name");
         const dashboardPath = `/users/dashboard`;
+        const accountPath = `/users/account`;
     
         try {
             const datas = await getKeyValueFromFireBase(dashboardPath);
@@ -59,8 +60,8 @@ class Dashboard extends Component {
                     const [comments, likes, username, userImage, tieude, tieudeTiengTrung, author, imgAuthor, link, weblink, dateTime, id, baidich] = await Promise.all([
                         getKeyValueFromFireBase(`${dashboardPath}/${key}/${baiviet.key}/comment`),
                         getKeyValueFromFireBase(`${dashboardPath}/${key}/${baiviet.key}/like`),
-                        getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/username`),
-                        getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/userImage`),
+                        getValueFromPath(`${dashboardPath}/${key}/name`),
+                        getValueFromPath(`${accountPath}/${key}/img`),
                         getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/tieude`),
                         getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/tieudeTiengTrung`),
                         getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/author`),
@@ -78,9 +79,11 @@ class Dashboard extends Component {
     
                     if (comments) {
                         commentDetails = await Promise.all(comments.map(async (comment) => {
+                            const userKey = await  getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/comment/${comment.key}/user`);
                             const [username, userImage, cmt, dateTime] = await Promise.all([
-                                getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/comment/${comment.key}/username`),
-                                getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/comment/${comment.key}/userImage`),
+                                
+                                getValueFromPath(`${accountPath}/${userKey}/name`),
+                                getValueFromPath(`${accountPath}/${userKey}/img`),
                                 getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/comment/${comment.key}/cmt`),
                                 getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/comment/${comment.key}/dateTime`)
                             ]);
@@ -255,10 +258,10 @@ class Dashboard extends Component {
             }
             const commentId = `${id}-${formatDateTime(currentDateTime)}`;
     
-            await AddDataToFireBaseNoKey(`${CmtPath}/${commentId}/username`, MyUserName);
+            // await AddDataToFireBaseNoKey(`${CmtPath}/${commentId}/username`, MyUserName);
             await AddDataToFireBaseNoKey(`${CmtPath}/${commentId}/user`, myUser);
             await AddDataToFireBaseNoKey(`${CmtPath}/${commentId}/cmt`, cmt);
-            await AddDataToFireBaseNoKey(`${CmtPath}/${commentId}/userImage`, MyUserImage);
+            // await AddDataToFireBaseNoKey(`${CmtPath}/${commentId}/userImage`, MyUserImage);
             await AddDataToFireBaseNoKey(`${CmtPath}/${commentId}/dateTime`, currentDateTime);
     
             // Update state with new comment

@@ -1,22 +1,19 @@
+"use client"
 import React, { Component } from 'react';
-import './NavHeader.css';
+import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import './NavHeader.css';
 
-interface NavHeaderProps {
-    toggleMenuSide: () => void;
-}
+const NavHeaderWrapper = () => {
+    const router = useRouter();
+    return <NavHeader router={router} />;
+};
 
-interface NavHeaderState {
-    isDropdownOpen: boolean;
-    logout: boolean;
-}
-
-class NavHeader extends Component<NavHeaderProps, NavHeaderState> {
-    state: NavHeaderState = {
+class NavHeader extends Component {
+    state = {
         isDropdownOpen: false,
-        logout: false
+        logout: false,
     };
 
     toggleDropdown = () => {
@@ -28,7 +25,9 @@ class NavHeader extends Component<NavHeaderProps, NavHeaderState> {
     }
 
     loginFunction = () => {
-        this.setState({ logout: true });
+        this.setState({
+            logout: true
+        });
     }
 
     LogoutFunction = () => {
@@ -40,17 +39,19 @@ class NavHeader extends Component<NavHeaderProps, NavHeaderState> {
             showConfirmButton: false,
             timer: 1500
         });
-        this.setState({ logout: true });
+        this.setState({
+            logout: true
+        });
     }
 
-    componentDidUpdate(prevProps: NavHeaderProps, prevState: NavHeaderState) {
+    componentDidUpdate(prevProps, prevState) {
         if (this.state.logout && !prevState.logout) {
-            useRouter().push('/login');
+            this.props.router.push('/login');
         }
     }
 
     render() {
-        const { isDropdownOpen } = this.state;
+        const { isDropdownOpen, logout } = this.state;
         const userName = localStorage.getItem("name");
 
         return (
@@ -79,18 +80,18 @@ class NavHeader extends Component<NavHeaderProps, NavHeaderState> {
                             aria-labelledby="navbarDropdown"
                         >
                             <li>
-                                <Link href="/changePassword" passHref legacyBehavior>
-                                    <a className="dropdown-item">
+                                <Link className="dropdown-item" href="/changePassword" passHref legacyBehavior>
+                                    <div className="dropdown-item">
                                         <i className="fa-solid fa-gears nav-icon"></i>
                                         Đổi mật khẩu
-                                    </a>
+                                    </div>
                                 </Link>
                             </li>
                             <li>
-                                <a className="dropdown-item" onClick={this.loginFunction}>
+                                <div className="dropdown-item" onClick={this.loginFunction}>
                                     <i className="fa-solid fa-arrow-right-to-bracket nav-icon"></i>
                                     Đăng nhập
-                                </a>
+                                </div>
                             </li>
                             <li>
                                 <hr className="dropdown-divider" />
@@ -109,7 +110,7 @@ class NavHeader extends Component<NavHeaderProps, NavHeaderState> {
     }
 }
 
-const BtnLink: React.FC<{ toggleMenuSideVisibility: () => void }> = ({ toggleMenuSideVisibility }) => {
+const BtnLink = ({ toggleMenuSideVisibility }) => {
     return (
         <button
             className="btn btn-link btn-sm order-lg-0 me-4 me-lg-0"
@@ -121,4 +122,4 @@ const BtnLink: React.FC<{ toggleMenuSideVisibility: () => void }> = ({ toggleMen
     );
 };
 
-export default NavHeader;
+export default NavHeaderWrapper;

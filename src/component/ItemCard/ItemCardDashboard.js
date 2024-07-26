@@ -4,6 +4,7 @@ import { vi } from 'date-fns/locale';
 import Link from 'next/link'; 
 import './ItemCard.css';
 import userImage from '@/assets/image/user.jpg';
+import Image from 'next/image';
 
 const ItemCardDashboard = React.memo((props) => {
     const truncateText = (text, maxLength) => {
@@ -52,7 +53,9 @@ const ItemCardDashboard = React.memo((props) => {
         <div className='itemCard-container-dashboard' onClick={props.cardClick} onMouseEnter={props.cardClick}>
             <div className='itemCard-UserName'>
                 <div className='itemCard-UserName-1'>
-                    <img src={props.imgUser ? props.imgUser : userImage} alt="img" />
+                    <Image src={props.imgUser ? props.imgUser : userImage} alt="img"
+                    width={50} 
+                    height={50}/>
                     <div className='itemCard-UserName-container'>
                         <h4 className='username-card'>{props.username}</h4>
                         <p style={{ margin: '0' }}>{formatDateTime(props.dateTime)}</p>
