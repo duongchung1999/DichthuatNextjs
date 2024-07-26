@@ -1,0 +1,157 @@
+import React, { useState } from 'react';
+import { format } from 'date-fns';
+import { vi } from 'date-fns/locale'; 
+import Link from 'next/link'; 
+import './ItemCard.css';
+import userImage from '@/assets/image/user.jpg';
+
+const ItemCardDashboard = React.memo((props) => {
+    const truncateText = (text, maxLength) => {
+        if (text && text.length > maxLength) {
+            return (
+                <>
+                    {text.substring(0, maxLength)}...
+                    <span className="see-more">
+                        <Link href={props.link} legacyBehavior>
+                            <a>xem thêm</a>
+                        </Link>
+                    </span>
+                </>
+            );
+        }
+        return text;
+    };
+
+    const formatDateTime = (dateTime) => {
+        if (!dateTime) return '';
+        try {
+            const date = new Date(dateTime);
+            return format(date, "h:mm a, dd 'Tháng' MM, yyyy", { locale: vi });
+        } catch (error) {
+            console.error('Invalid date format:', dateTime);
+            return dateTime;
+        }
+    };
+
+    const [isLiked, setIsLiked] = useState(false);
+    const [commentText, setCommentText] = useState('');
+
+    const handleLikeClick = () => {
+        setIsLiked(!isLiked);
+        props.likeClick();
+    };
+
+    const handleCommentChange = (e) => {
+        setCommentText(e.target.value);
+        if (props.onChangeHandle) {
+            props.onChangeHandle(e);
+        }
+    };
+
+    return (
+        <div className='itemCard-container-dashboard' onClick={props.cardClick} onMouseEnter={props.cardClick}>
+            <div className='itemCard-UserName'>
+                <div className='itemCard-UserName-1'>
+                    <img src={props.imgUser ? props.imgUser : userImage} alt="img" />
+                    <div className='itemCard-UserName-container'>
+                        <h4 className='username-card'>{props.username}</h4>
+                        <p style={{ margin: '0' }}>{formatDateTime(props.dateTime)}</p>
+                    </div>
+                </div>
+                <div className='itemCard-UserName-1'>
+                    <button
+                        className="btn btn-options"
+                        onClick={props.removeClick}
+                        style={{ padding: '0', margin: '0' }}
+                    >
+                        <i className="fa-solid fa-trash" />
+                    </button>
+                </div>
+            </div>
+
+            <div className='itemCard-baiDich'>
+                {props.img ?
+                    <pre>
+                        {truncateText(props.baidich, 300)}
+                    </pre>
+                    :
+                    <pre>
+                        {props.baidich}
+                    </pre>}
+            </div>
+            {props.img && <Link href={props.link} passHref legacyBehavior>
+                <a className="itemCard-title-dashboard" onClick={props.cardClick}>
+                    <img src={props.img} alt="null" />
+                </a>
+            </Link>}
+
+            <div className='itemCard-content'>
+                {props.img && <h3 className='itemCard-content-title'>{props.title}</h3>}
+                {props.img && <div className='itemCard-content-description'>
+                    <span>{props.tieudeTiengTrung}</span>
+                </div>}
+                <div className='ItemCard-dashboard-footer'>
+                    <div className='ItemCard-interact'>
+                        <div className='ItemCard-interact-likeview'>
+                            <div className='liked-view'>
+                                <i className="fa-solid fa-thumbs-up"></i>
+                            </div>
+
+                            <span className='ItemCard-interact-liked'>
+                                <div>{props.likes}</div>
+                            </span>
+                        </div>
+                        <hr />
+                        <div className='row'>
+                            <div className='col-6 ItemCard-interact-item' onClick={handleLikeClick}>
+                                <div className={`ItemCard-interact-item-flex ${props.isLiked ? 'liked' : ''}`}>
+                                    <i className={`fa-regular fa-thumbs-up ${props.isLiked ? 'liked-icon' : ''}`}></i>
+                                    <span>Thích</span>
+                                </div>
+
+                            </div>
+
+                            <div className='col-6 ItemCard-interact-item' onClick={props.cmtClick}>
+                                <div className='ItemCard-interact-item-flex'>
+                                    <i className="fa-regular fa-comment"></i>
+                                    <span>Bình luận</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div className='itemCard-comment'>
+                        <div className='itemCard-comment-container'>
+                            <div className='itemCard-comment-viewer'>
+                                {props.comment}
+                            </div>
+                            <div className='itemCard-comment-write'>
+                                <div className='itemCard-user-image'>
+                                    <img src={props.imgUser ? props.imgUser : userImage} alt="img" />
+                                </div>
+                                <div className='comment-input-container'>
+                                    <textarea
+                                        className="form-control comment-input"
+                                        name={props.name}
+                                        aria-describedby="helpId"
+                                        placeholder={"Bình luận với vai trò " + props.username}
+                                        onChange={handleCommentChange}
+                                        value={commentText}
+                                    ></textarea>
+                                    <div className={`itemCard-comment-send  ${commentText ? 'active1' : 'no-item'}`}
+                                        onClick={props.sendCmtHandle}>
+                                        <i className={`fa-solid fa-paper-plane`}></i>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    );
+});
+
+export default ItemCardDashboard;

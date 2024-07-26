@@ -1,0 +1,47 @@
+.sb-nav-fixed{
+  font-family: cursive;
+}
+.layoutContainer{
+    position: sticky;
+    top: 0;
+    width: 110px;
+    height: 100vh;
+    margin-left: 5px;
+    /* background-color: #212529;; */
+  }
+  
+  
+  
+  .App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+  
+  
+  
+  /* User table Begin */
+  .UserContainer, .UserContainer-block{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    font-family: cursive;
+  }
+  #table-container {
+    width: 85vh;
+  
+    padding-left: 50px;
+    padding-top: 60px;
+  }
+  
+  .dichthuat-container{
+    margin-left: 0;
+  }
+
+  

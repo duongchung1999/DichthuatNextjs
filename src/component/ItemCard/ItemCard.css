@@ -1,0 +1,424 @@
+.itemCard-container{
+    /* position: relative; */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #00000008;
+    transition: transform .2s, box-shadow .2s;
+    /* cursor: pointer; */
+    margin-bottom: 30px;
+}
+
+.itemCard-title{
+    position: relative;
+    display: block;
+    width: 100%;
+    padding-top: 56.25%;
+    border-radius: 16px 16px 0 0;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+
+
+.itemCard-img-des{
+    position: absolute;
+    top: calc(50% - 50px);
+    /* left: 50%; */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    z-index: 1;
+    color: black;
+
+}
+
+.itemCard-title img,.itemCard-title iframe{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* .itemCard-title-dashboard img,.itemCard-title-dashboard iframe{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60%;
+    height: 60%;
+    object-fit: cover;
+} */
+
+
+.itemCard-content{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 20px;
+}
+
+.itemCard-content h3,
+.itemCard-content span{
+    font-size: 20px
+}
+
+.itemCard-content-author h4{
+    font-size: 18px !important
+}
+
+.itemCard-content-description span{
+    box-sizing: border-box;
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    /* white-space: nowrap; */
+    text-overflow: ellipsis;
+    color: #808285;
+    letter-spacing: 4px;
+    width: 100%;
+    display: inline;
+    text-align: center;
+    font-family: PingFang SC, Helvetica Neue, Helvetica, Arial, Hiragino Sans GB, Microsoft Yahei, \\5FAE\8F6F\96C5\9ED1, STHeiti, \\534E\6587\7EC6\9ED1, sans-serif;
+}
+
+.itemCard-content-description{
+    color: #808285;
+    letter-spacing: 4px;
+    font-family: PingFang SC, Helvetica Neue, Helvetica, Arial, Hiragino Sans GB, Microsoft Yahei, \\5FAE\8F6F\96C5\9ED1, STHeiti, \\534E\6587\7EC6\9ED1, sans-serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    /* white-space: nowrap; */
+    text-overflow: ellipsis;
+}
+
+.itemCard-content-author{
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+}
+.itemCard-content-author-container{
+    position: relative;
+    /* display: block; */
+    width: 100%;
+    object-fit: cover;
+    overflow: hidden;
+    display: flex;
+}
+.itemCard-content-author-container img{
+    position: absolute; 
+    display: flex;
+    top: 0;
+    left: 0;
+    /* width: 100%; */
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.itemCard-content-author-container h4{
+    margin-left: 50px;
+    text-decoration: none;
+    outline: none;
+    color: #f05123;
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+
+
+/* dashboard */
+.itemCard-container-dashboard{
+    /* position: relative; */
+    padding: 0 30px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-radius: 16px;
+    /* overflow: hidden; */
+    overflow-y: auto;
+    background: #00000008;
+    transition: transform .2s, box-shadow .2s;
+    /* cursor: pointer; */
+    margin-bottom: 20px;
+    
+}
+.itemCard-title-dashboard{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* width: 100%;
+    padding-top: 56.25%; */
+    border-radius: 16px 16px 0 0;
+    object-fit: cover;
+    overflow: hidden;
+}
+.itemCard-title-dashboard img,.itemCard-title-dashboard iframe{
+    
+    width: 40%;
+    height: 40%;
+}
+.see-more {
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 15px;
+}
+.see-more a{
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 15px;
+    color: #000;
+}
+
+.see-more:hover {
+    text-decoration: underline;
+}
+.itemCard-UserName{
+  
+    top: 0;
+    display: flex;
+    align-items:flex-start;
+    margin-bottom: 10px;
+    justify-content: space-between;
+
+    
+    /* position: relative;
+    width: 100%;
+    object-fit: cover;
+    overflow: hidden; */
+}
+.itemcard-UserName-sticky{
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    background-color: #F7F7F7;
+
+}
+.itemCard-UserName-1{
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    /* position: relative;
+    width: 100%;
+    object-fit: cover;
+    overflow: hidden; */
+}
+.itemCard-UserName-2{
+    position: relative;
+    display: flex;
+    margin-bottom: 10px;
+}
+.itemCard-UserName-2 span {
+    font-size: 12px;
+}
+.itemCard-UserName-2 p {
+    font-size: 14px;
+}
+.itemCard-UserName-2 h6{
+ text-decoration: solid;
+}
+.itemCard-UserName img{
+    /* position: absolute;  */
+    display: flex;
+    top: 0;
+    left: 0;
+    height: 40px;
+    width: 40px;
+    /* width: 100%; */
+    /* height: 100%; */
+    object-fit: cover;
+    border-radius: 50%;
+}
+.itemCard-UserName-container{
+    margin-left: 10px;
+}
+.itemCard-UserName-container-1{
+    background-color: #dee2e6;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.ItemCard-interact-item{
+    display: block;
+    width: 60%;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    /* padding: 15px; */
+    
+}
+
+.ItemCard-interact-item  :hover{
+    background-color: #F0F2F5;
+}
+
+
+.ItemCard-interact-item-flex{
+    display: flex;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    /* padding: 15px; */
+}
+.ItemCard-interact-item-flex span{
+    margin-left: 10px;
+}
+
+.ItemCard-interact-likeview{
+    display: flex;
+    margin: 10px;
+    align-items: center;
+}
+.ItemCard-interact-likeview svg{
+    color: #dee7f2;
+}
+.ItemCard-interact-likeview .ItemCard-interact-liked{
+    /* display: flex; */
+    margin-left: 10px;
+}
+
+.liked-view{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    background-color: #077BFE;
+}
+.ItemCard-interact-item-flex.liked {
+    color: #077BFE;
+}
+
+.ItemCard-interact-item-flex.liked svg {
+    animation: likeAnimation 0.4s ease-in-out;
+}
+
+.itemCard-comment-write{
+    display: flex;
+    width: 100%;
+    align-items: center;
+
+}
+
+.itemCard-comment-write .itemCard-user-image{
+    /* width: 35px;
+    height: 35px;
+    border-radius: 50%; */
+}
+.itemCard-comment-write .itemCard-user-image img{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.itemCard-comment-write .comment-input{
+    /* background-color: #fff; */
+    /* border-radius: 10px; */
+    border: none;
+    outline: none;
+    resize: none;
+    min-height: 60px;
+    max-height: 100px;
+    font-size: 16px;
+}
+.itemCard-comment-write textarea:focus{
+    border: none;
+    outline: none; 
+    box-shadow: none;
+}
+.itemCard-comment-write .comment-input-container{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+.itemCard-comment-send{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    margin-right: 10px;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+}
+.itemCard-comment-send:hover{
+    background-color: #dee7f2;
+}
+
+.itemCard-comment-send.active1 svg{
+    color: #077BFE;
+}
+.itemCard-comment-send.no-item svg{
+    color: #c1c1c1;
+}
+.itemCard-comment-send.no-item {
+    pointer-events: none ; /* Disable click events */
+    cursor:not-allowed ;
+}
+.itemCard-UserName .btn-options:focus{
+    border: none;
+    outline: none; 
+    box-shadow: none;
+}
+.itemCard-UserName .btn-options svg {
+    padding: 10px;
+    border-radius: 5px;
+}
+.itemCard-UserName .btn-options :hover{
+    background-color: #F2F2F2;
+    
+}
+/* .itemCard-baiDich pre{
+    white-space: pre-wrap; 
+    word-wrap: break-word; 
+    font-family: cursive;
+    line-height: 1.6;
+    font-size: 20px;
+    
+} */
+pre{
+    white-space: pre-wrap; 
+    word-wrap: break-word; 
+    font-family: cursive;
+    line-height: 1.6;
+    font-size: 20px;
+    
+}
+
+.Comment-Item{
+    display: flex;
+    width: 100%;
+}
+.Comment-Item{
+    display: flex;
+    width: 100%;
+}
+
+pre {
+    
+}
+@keyframes likeAnimation {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.5);
+    }
+}
