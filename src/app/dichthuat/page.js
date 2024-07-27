@@ -29,46 +29,50 @@ class DichThuatList extends Component {
     }
 
     getDichThuat = async () => {
-        this.setState({ loading: true }); 
-        const convertPath = "/users/dichthuat";
-        const dichthuats = await getKeyValueFromFireBase(convertPath);
-        this.setState({ dichthuats });
-
-        const dataPromises = dichthuats.map(async (dichthuat) => {
-            const key = dichthuat.key;
-            return {
-                key,
-                youtubeLinkToGetImg: await getValueFromPath(`/users/dichthuat/${key}/link`),
-                webLink: await getValueFromPath(`/users/dichthuat/${key}/webLink`),
-                tieudeTiengTrung: await getValueFromPath(`/users/dichthuat/${key}/tieudeTiengTrung`),
-                tieude: await getValueFromPath(`/users/dichthuat/${key}/tieude`),
-                author: await getValueFromPath(`/users/dichthuat/${key}/author`),
-                imgAuthor: await getValueFromPath(`/users/dichthuat/${key}/imgAuthor`),
-                id: await getValueFromPath(`/users/dichthuat/${key}/id`),
-            };
-        });
-
-        const dataResults = await Promise.all(dataPromises);
-        
-        const webLinks = {};
-        const tieudeTiengTrungs = {};
-        const authors = {};
-        const youtubeLinkToGetImgs = {};
-        const imgAuthors = {};
-        const ids = {};
-        const tieudes = {};
-
-        dataResults.forEach(data => {
-            webLinks[data.key] = data.webLink;
-            tieudeTiengTrungs[data.key] = data.tieudeTiengTrung;
-            authors[data.key] = data.author;
-            youtubeLinkToGetImgs[data.key] = data.youtubeLinkToGetImg;
-            imgAuthors[data.key] = data.imgAuthor;
-            ids[data.key] = data.id;
-            tieudes[data.key] = data.tieude;
-        });
-
-        this.setState({ webLinks, tieudeTiengTrungs, authors, imgAuthors, youtubeLinkToGetImgs, ids, tieudes, loading: false }); // Set loading to false after data is loaded
+        try {
+            this.setState({ loading: true });
+            const convertPath = "/users/dichthuat";
+            const dichthuats = await getKeyValueFromFireBase(convertPath);
+    
+            const dataPromises = dichthuats.map(async (dichthuat) => {
+                const key = dichthuat.key;
+                return {
+                    key,
+                    youtubeLinkToGetImg: await getValueFromPath(`/users/dichthuat/${key}/link`),
+                    webLink: await getValueFromPath(`/users/dichthuat/${key}/webLink`),
+                    tieudeTiengTrung: await getValueFromPath(`/users/dichthuat/${key}/tieudeTiengTrung`),
+                    tieude: await getValueFromPath(`/users/dichthuat/${key}/tieude`),
+                    author: await getValueFromPath(`/users/dichthuat/${key}/author`),
+                    imgAuthor: await getValueFromPath(`/users/dichthuat/${key}/imgAuthor`),
+                    id: await getValueFromPath(`/users/dichthuat/${key}/id`),
+                };
+            });
+    
+            const dataResults = await Promise.all(dataPromises);
+    
+            const webLinks = {};
+            const tieudeTiengTrungs = {};
+            const authors = {};
+            const youtubeLinkToGetImgs = {};
+            const imgAuthors = {};
+            const ids = {};
+            const tieudes = {};
+    
+            dataResults.forEach(data => {
+                webLinks[data.key] = data.webLink;
+                tieudeTiengTrungs[data.key] = data.tieudeTiengTrung;
+                authors[data.key] = data.author;
+                youtubeLinkToGetImgs[data.key] = data.youtubeLinkToGetImg;
+                imgAuthors[data.key] = data.imgAuthor;
+                ids[data.key] = data.id;
+                tieudes[data.key] = data.tieude;
+            });
+    
+            this.setState({ webLinks, tieudeTiengTrungs, authors, imgAuthors, youtubeLinkToGetImgs, ids, tieudes, loading: false });
+        } catch (error) {
+            console.error("Error getting dichthuat data: ", error);
+            this.setState({ loading: false });
+        }
     }
 
     to_slug = (slug) => {
@@ -98,7 +102,8 @@ class DichThuatList extends Component {
 
     showDichThuat = () => {
         const { tieudes, dichthuats, youtubeLinkToGetImgs, webLinks, tieudeTiengTrungs, authors, imgAuthors, ids } = this.state;
-        if (dichthuats.length > 0) {
+    
+        if (tieudes && authors && dichthuats.length > 0) {
             return dichthuats.map((dichthuat, index) => {
                 const webLink = webLinks[dichthuat.key];
                 const tieude = tieudes[dichthuat.key];
@@ -107,7 +112,7 @@ class DichThuatList extends Component {
                 const imgAuthor = imgAuthors[dichthuat.key];
                 const youtubeLinkToGetImg = youtubeLinkToGetImgs[dichthuat.key];
                 const id = ids[dichthuat.key];
-                console.log(id)
+    
                 return (
                     <ItemCard
                         cardClick={() => this.setDichThuatName(dichthuat.key)}
@@ -117,15 +122,18 @@ class DichThuatList extends Component {
                         imgAuthor={imgAuthor}
                         key={index}
                         link={`/dichthuat/dichthuatDetails/${this.to_slug(dichthuat.key)}/${id}`}
-                        title={tieude ? tieude : null}
+                        title={tieude || null}
                         titleDescription="Description"
                         img={id ? `https://img.youtube.com/vi/${id}/sddefault.jpg` : null}
                         alt="IMG Link"
                     />
                 );
             });
-        } else return null;
+        } else {
+            return null;
+        }
     }
+    
 
     getYoutubeId = (link) => {
         var yt = link.split('=');
