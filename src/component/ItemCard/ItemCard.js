@@ -1,20 +1,17 @@
-"use client"
 import Link from 'next/link';
 import React from 'react';
 import './ItemCard.css';
 import Image from 'next/image';
 
+const defaultImage = 'https://www.lifedna.com.tw/upload-files/motto/pic/1291771141.jpg?v=2016'; // Đường dẫn đến hình ảnh mặc định
+const defaultAuthorImage = 'https://yt3.googleusercontent.com/ytc/AIdro_nevnvE7nYPdcdQLMZgoxJsx1g62U2soHKg3PAG3rQE0g=s160-c-k-c0x00ffffff-no-rj'; // Đường dẫn đến hình ảnh tác giả mặc định
+
 const ItemCard = React.memo((props) => {
     return (
-        <div className='col-3' style={{ marginTop: "20px" }} >
+        <div className='col-4' style={{ marginTop: "20px" }} >
             <div className='itemCard-container' onClick={props.cardClick} onMouseEnter={props.cardClick}>
                 <Link className="itemCard-title" href={props.link} target="_self" onClick={props.cardClick}>
-                    {/* <div className='itemCard-img-des'>
-                        <h2>{props.title}</h2>
-                        <h4>{props.titleDescription}</h4>
-                    </div> */}
-
-                    <Image src={props.img} alt="null" />
+                    <Image src={props.img || defaultImage} alt="Item Image" width={500} height={500}/>
                 </Link>
 
                 <div className='itemCard-content'>
@@ -24,8 +21,8 @@ const ItemCard = React.memo((props) => {
                     </div>
                     <div className='itemCard-content-author'>
                         <div className='itemCard-content-author-container'>
-                            <Image src={props.imgAuthor} alt="img" />
-                            <a href={props.webLink} target='_blank' >
+                            <Image src={props.imgAuthor || defaultAuthorImage} alt="Author Image" width={30} height={30}/>
+                            <a href={props.webLink} target='_blank'>
                                 <h4>{props.author}</h4>
                             </a>
                         </div>

@@ -34,26 +34,7 @@ const firebaseConfig = {
 
  // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 const db = getDatabase(app);
-const dataRef = ref(db, '/users/user1/contents/C1B40/C1B40');
- // Đọc dữ liệu từ Firebase
- get(dataRef).then((snapshot) => {
-         if (snapshot.exists()) {
-             // snapshot.val() chứa dữ liệu bạn muốn
-             const data = snapshot.val();
-            //  console.log("Dữ liệu từ Firebase:", data);
-         } else {
-             console.log("Không có dữ liệu tại đường dẫn này.");
-         }
-     }).catch((error) => {
-         console.error("Lỗi khi đọc dữ liệu:", error);
-     });
-
-   
-
-
-// Ghi dữ liệu lên Firebase
 
 
 

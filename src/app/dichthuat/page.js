@@ -68,7 +68,7 @@ class DichThuatList extends Component {
                 tieudes[data.key] = data.tieude;
             });
     
-            this.setState({ webLinks, tieudeTiengTrungs, authors, imgAuthors, youtubeLinkToGetImgs, ids, tieudes, loading: false });
+            this.setState({ dichthuats,webLinks, tieudeTiengTrungs, authors, imgAuthors, youtubeLinkToGetImgs, ids, tieudes, loading: false });
         } catch (error) {
             console.error("Error getting dichthuat data: ", error);
             this.setState({ loading: false });
@@ -102,8 +102,10 @@ class DichThuatList extends Component {
 
     showDichThuat = () => {
         const { tieudes, dichthuats, youtubeLinkToGetImgs, webLinks, tieudeTiengTrungs, authors, imgAuthors, ids } = this.state;
-    
+        console.log(this.state)
         if (tieudes && authors && dichthuats.length > 0) {
+            console.log(123)
+            console.log(dichthuats)
             return dichthuats.map((dichthuat, index) => {
                 const webLink = webLinks[dichthuat.key];
                 const tieude = tieudes[dichthuat.key];
