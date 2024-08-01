@@ -1,25 +1,23 @@
-'use client'
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import PageForm from '@/component/PageForm/PageForm';
 import ItemCard from '@/component/ItemCard/ItemCard';
 import { getKeyValueFromFireBase, getValueFromPath } from '@/component/firebase/Firebase';
 import WaitingLoad from '@/component/WaitingLoad/WaitingLoad';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-export default function DichThuatDetails({ params }) {
-    const slug = params.slug;
-    const id = params.id;
+export default function DichThuatDetailsClient({ slug }) {
     const [dichthuats, setDichthuats] = useState([]);
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (slug && id) {
+        if (slug) {
             getDichThuat();
         }
-    }, [slug, id]);
+    }, [slug]);
 
     const getDichThuat = async () => {
         setLoading(true);
@@ -54,7 +52,8 @@ export default function DichThuatDetails({ params }) {
     };
 
     const getYoutubeId = (link) => {
-        var yt = link.split('=');
+        var yt = link&&link.split('=');
+        console.log(yt);
         const videoId = yt[1] ? yt[1].split('&')[0] : "null";
         return videoId;
     };

@@ -32,5 +32,5 @@ const ItemCard = React.memo((props) => {
         </div>
     );
 });
-
+ItemCard.displayName = 'ItemCard';
 export default ItemCard;

@@ -1,4 +1,4 @@
-"use client"
+'use client'
 import React, { Component } from 'react';
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
@@ -14,7 +14,13 @@ class NavHeader extends Component {
     state = {
         isDropdownOpen: false,
         logout: false,
+        userName: null, // Add userName to state
     };
+
+    componentDidMount() {
+        const userName = localStorage.getItem("name"); // Access localStorage in componentDidMount
+        this.setState({ userName });
+    }
 
     toggleDropdown = () => {
         this.setState(prevState => ({ isDropdownOpen: !prevState.isDropdownOpen }));
@@ -51,8 +57,7 @@ class NavHeader extends Component {
     }
 
     render() {
-        const { isDropdownOpen, logout } = this.state;
-        const userName = localStorage.getItem("name");
+        const { isDropdownOpen, logout, userName } = this.state; // Use userName from state
 
         return (
             <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">

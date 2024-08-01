@@ -157,4 +157,6 @@ const ItemCardDashboard = React.memo((props) => {
     );
 });
 
+ItemCardDashboard.displayName = 'ItemCardDashboard';
+
 export default ItemCardDashboard;

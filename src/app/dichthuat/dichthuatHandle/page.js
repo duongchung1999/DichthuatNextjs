@@ -186,7 +186,7 @@ class DichThuatHandle extends Component {
                 <div>
                     {this.state.error&&(
                         <div className='dichthuat-showError'>
-                           Lỗi: "{this.state.error.message}"
+                           Lỗi: &quot;{this.state.error.message}&quot;
                         </div> 
                     )}
                     

@@ -123,7 +123,7 @@ class DichThuatList extends Component {
                         author={author}
                         imgAuthor={imgAuthor}
                         key={index}
-                        link={`/dichthuat/dichthuatDetails/${this.to_slug(dichthuat.key)}/${id}`}
+                        link={`/dichthuat/dichthuatDetails/${this.to_slug(dichthuat.key)}`}
                         title={tieude || null}
                         titleDescription="Description"
                         img={id ? `https://img.youtube.com/vi/${id}/sddefault.jpg` : null}

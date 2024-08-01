@@ -2,7 +2,8 @@ import { format } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import './PublicFunction.css'
 import React, { useState,Component } from 'react';
-import userImage from '@/assets/image/user.jpg'
+import userImage from '@/assets/image/user.jpg';
+import Image from 'next/image';
 
 const formatDateTime = (dateTime) => {
     if (!dateTime) return '';
@@ -21,7 +22,7 @@ function ItemCardUserPost(props){
          <div className='itemCard-container-dashboard' ref={props.refViewBaidich}>
             <div className='itemCard-UserName itemcard-UserName-sticky'>
                 <div className='itemCard-UserName-1'>
-                    <img src={props.imgUser ? props.imgUser : userImage} alt="img" />
+                    <Image src={props.imgUser ? props.imgUser : userImage} alt="img" width={30} height={30}/>
                     <div className='itemCard-UserName-container'>
                         <h4 className='username-card'>{props.username}</h4>
                         <p style={{ margin: '0' }}>{formatDateTime(props.dateTime)}</p>

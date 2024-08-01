@@ -31,7 +31,7 @@ const ItemCardYoutube = memo((props) => {
         </div>
     );
 });
-
+ItemCardYoutube.displayName = "ItemCardYoutube"
 export default ItemCardYoutube;
 
 function ShowYoutube(props) {

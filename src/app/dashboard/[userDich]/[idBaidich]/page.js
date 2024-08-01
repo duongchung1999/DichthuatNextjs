@@ -1,17 +1,17 @@
 import React from 'react';
-import DichthuatViewerClient from './DichthuatViewerClient';
+import DashboardViewItemClient from './DashboardViewItemClient';
 import { getKeyValueFromFireBase, getValueFromPath } from '@/component/firebase/Firebase';
 
-export default function DichthuatViewer({ params }) {
-    const bodich = params.bodich;
-    const baidich = params.baidich;
+export default function DashboardViewItem({ params }) {
+    const userDich = params.userDich;
+    const idBaidich = params.idBaidich;
 
-    return <DichthuatViewerClient bodich={bodich} baidich={baidich}/>;
+    return <DashboardViewItemClient idBaidich={idBaidich} userDich={userDich}/>;
 }
 
 export async function generateStaticParams() {
     const slugList = await getUserList();
-    const idList = await getBaidichList();
+    const idList = await getIdList();
     const paths = [];
     for (const slug of slugList) {
         for(const id of idList){
@@ -33,14 +33,14 @@ async function getUserList() {
     return Object.keys(userDichs);
 }
 
-async function getBaidichList() {
+async function getIdList() {
     const userDichPath = `/users/dichthuat`;
     const userDichs = await getKeyValueFromFireBase(userDichPath);
     const ids = {};
 
     const idPromises = userDichs.map(async (userDich) => {
         const key = userDich.key;
-        const value = await getKeyValueFromFireBase(`${userDichPath}/${key}/listBaihoc`);
+        const value = await getKeyValueFromFireBase(`${userDichPath}/${key}`);
         ids[key] = value;
     });
 

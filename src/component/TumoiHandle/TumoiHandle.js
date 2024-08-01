@@ -232,7 +232,7 @@ class TumoiHandle extends Component {
             <div className='col-12 col-md-6 col-lg-6 col-xxl-2 gy-6 gx-2'>
                 {this.state.error && (
                     <div className='dichthuat-showError'>
-                        Lỗi: "{this.state.error.message}"
+                         Lỗi: &quot;{this.state.error.message}&quot;
                     </div>
                 )}
                 <Button variant="info" onClick={this.updateTumoi}>
