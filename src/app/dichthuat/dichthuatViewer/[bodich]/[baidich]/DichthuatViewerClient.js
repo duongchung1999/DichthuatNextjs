@@ -280,9 +280,15 @@ export default function DichthuatViewerClient({bodich,baidich}) {
                 return (
                     <div className='tumoi-item' key={index}>
                         <div className='tumoi-display'>
-                            <h4>{index + 1}, {tuMoi.key}  【{hanviet}】</h4>
-                            <h5>{tuMoi.key}/ {tuMoiPinyin}</h5>
-                            <hr />
+                            <div className='tumoi-display-header'>
+                                <h4>{index + 1}, {tuMoi.key}  【{hanviet}】</h4>
+                                    <Button variant={showMeaning?'danger':'warning'} onClick={() => toggleMeanings(tuMoi.key)}>
+                                    {showMeaning ? 'Ẩn bớt nghĩa của từ' : 'Hiển thị nghĩa của từ'}
+                                    </Button>
+                            </div>
+                            
+                            
+                            
                             
                             {showMeaning && tuMoiNghiaGet && tuMoiNghiaGet.map((nghia, nghiaIndex) => {
                                 const vidu = tumoiViduGets[nghia.key];
@@ -291,6 +297,8 @@ export default function DichthuatViewerClient({bodich,baidich}) {
 
                                 return (
                                     <div className='tumoi-nghia' key={nghiaIndex}>
+                                        <h5>{tuMoi.key}/ {tuMoiPinyin}</h5>
+                                        <hr />
                                         <h4 className='tumoi-nghia-shower'>Nghĩa {nghiaIndex + 1}: {nghiaTuMoi}</h4>
                                         {vidu && vidu.map((vd, vdindex) => {
                                             const viduTiengTrung = tuMoiVidus[vd.key];
@@ -321,11 +329,6 @@ export default function DichthuatViewerClient({bodich,baidich}) {
                                     </div>
                                 );
                             })}
-                            <hr />
-                            <Button variant={showMeaning?'danger':'warning'} onClick={() => toggleMeanings(tuMoi.key)}>
-                                {showMeaning ? 'Ẩn bớt nghĩa của từ' : 'Hiển thị nghĩa của từ'}
-                            </Button>
-                            <hr />
                         </div>
                     </div>
                 );
@@ -340,18 +343,26 @@ export default function DichthuatViewerClient({bodich,baidich}) {
             body={
                 <div>
                     <div className='dichthuat-container row'>
-                        <div className='col-12 col-md-6 col-lg-6 col-xxl-2 gy-6 gx-2'>
+                        <div className='col-4'>
+                            <div>
                             <ItemCardYoutube
                                 videoLink={embedLink ? embedLink : null}
                                 webLink={webLink ? webLink : null}
                                 tieudeTiengTrung={tieudeTiengTrung ? tieudeTiengTrung : null}
-                                author={author ? author : null}
+                                    author={author ? author : null}
                                 imgAuthor={imgAuthor ? imgAuthor : null}
                                 title={tieude ? tieude : null}
                             />
+                            </div>
+                            
+                        </div>
+                        <div className='noiDungBaiDich col-4'>
+                                <pre>
+                                    {noiDungBaiDich ? noiDungBaiDich : ''}
+                                </pre>
                         </div>
 
-                        <div className='col-12 col-md-6 col-lg-6 col-xxl-2 gy-6 gx-2'>
+                        <div className='col'>
                             <div className="card border-primary">
                                 <div className="card-body">
                                     <div className='' style={{display:'flex', justifyContent:'space-between', marginBottom:'10px'}}>
@@ -394,11 +405,7 @@ export default function DichthuatViewerClient({bodich,baidich}) {
                             )}
                         </div>
                         <div className='row'>
-                            <div className='noiDungBaiDich col-6'>
-                                <pre>
-                                    {noiDungBaiDich ? noiDungBaiDich : ''}
-                                </pre>
-                            </div>
+                           
                             <div className='col'>
                                 <div className='tumoi-container'>
                                     <div className='tumoi-header'></div>

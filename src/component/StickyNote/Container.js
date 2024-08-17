@@ -1,10 +1,9 @@
+"use client"
 import React, { Component } from 'react';
 import { DeleteSection } from '@/component/firebase/Firebase';
 import { loadFileList } from '@/component/firebase/Firebase';
 import { SaveDataToFirebase } from '@/component/firebase/Firebase';
 import { loadSelectedFile } from '@/component/firebase/Firebase';
-import { ShowTaskbar } from '@/component/Taskbar/Taskbar';
-import { HideTaskbar } from '@/component/Taskbar/Taskbar';
 
 
 class Container extends Component {
@@ -14,30 +13,13 @@ class Container extends Component {
             isMenuSideVisible: true
         };
     }
-    viewTaskbar = () =>{
-        console.log(456)
-        if(this.state.isMenuSideVisible){
-            ShowTaskbar();
-        }
-        else {
-            HideTaskbar();
-        }
-        this.setState(prevState =>({
-            isMenuSideVisible :!prevState.isMenuSideVisible
-        }))
-    }
+   
 
     render() {
         return (
             <div className="content js-content">
                     <div id="header-select">
                         <h1>
-                            {/* <Button variant="danger" onClick={this.props.menuOnClick}>
-                            <i class="fa-solid fa-bars" ></i>
-                            </Button> */}
-                        
-                        {/* <i className="menu-icon ti-angle-double-left" />
-                        <i className="menu-icon ti-angle-double-right" /> */}
                         Sticky Note
                         </h1>
                         {/* Thêm combobox */}

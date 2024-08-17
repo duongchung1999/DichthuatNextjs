@@ -12,7 +12,7 @@ justify-content: space-between;
     width: 100%;
     height: 100%;
     display: flex;
-    min-height: 300px;
+    height: 80vh;
 }
 .tumoi-container{
     padding: 10px;
@@ -35,11 +35,17 @@ justify-content: space-between;
 .tumoi-display{
     margin-bottom: 30px;
 }
-.tumoi-display>h4{
+.tumoi-display-header{
+    display: flex;
+    background-color: #212529;
+    border-radius: 20px;
+}
+.tumoi-display-header>h4{
     font-weight: 500;
     color: white;
     padding: 10px;
-    background-color: #212529;
+    margin-right: 20px;
+    /* background-color: #212529; */
 }
 
 .tumoi-nghia {
@@ -61,6 +67,6 @@ h4.tumoi-nghia-shower {
     margin: 0 10px;
 }
 .noiDungBaiDich{
-    max-height: 850px;
+    max-height: 90vh;
     overflow-y: auto;
 }

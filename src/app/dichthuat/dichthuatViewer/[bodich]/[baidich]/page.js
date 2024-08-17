@@ -10,41 +10,31 @@ export default function DichthuatViewer({ params }) {
 }
 
 export async function generateStaticParams() {
-    const slugList = await getUserList();
-    const idList = await getBaidichList();
+    const bodichList = await getBodichList();
     const paths = [];
-    for (const slug of slugList) {
-        for(const id of idList){
+
+    for (const bodichObj of bodichList) {
+        const baidichList = await getBaidichList(bodichObj.key);
+
+        for (const baidich of baidichList) {
             paths.push({
-                params: {
-                    slug: slug,
-                },
+                bodich: bodichObj.key,
+                baidich: baidich.key,
             });
         }
-        
     }
 
     return paths;
 }
 
-async function getUserList() {
-    const userDichPath = `/users/dichthuat`;
-    const userDichs = await getKeyValueFromFireBase(userDichPath);
-    return Object.keys(userDichs);
+async function getBodichList() {
+    const boDichPath = `/users/dichthuat`;
+    const bodichs = await getKeyValueFromFireBase(boDichPath);
+    return bodichs;
 }
 
-async function getBaidichList() {
-    const userDichPath = `/users/dichthuat`;
-    const userDichs = await getKeyValueFromFireBase(userDichPath);
-    const ids = {};
-
-    const idPromises = userDichs.map(async (userDich) => {
-        const key = userDich.key;
-        const value = await getKeyValueFromFireBase(`${userDichPath}/${key}/listBaihoc`);
-        ids[key] = value;
-    });
-
-    await Promise.all(idPromises);
-
-    return Object.keys(ids);
+async function getBaidichList(bodichKey) {
+    const baidichPath = `/users/dichthuat/${bodichKey}/listBaihoc`;
+    const baidichs = await getKeyValueFromFireBase(baidichPath);
+    return baidichs;
 }

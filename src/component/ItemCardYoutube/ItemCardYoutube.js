@@ -21,7 +21,7 @@ const ItemCardYoutube = memo((props) => {
                 </h4>
                 <div className='itemCard-content-author'>
                     <div className='itemCard-content-author-container'>
-                        <Image src={props.imgAuthor||defaultAuthorImage} alt="img" width={500} height={500}/>
+                        <Image src={props.imgAuthor||defaultAuthorImage} alt="img" width={50} height={50}/>
                         <a href={props.webLink} target='_blank' rel='noreferrer'>
                             <h4>{props.author}</h4>
                         </a>

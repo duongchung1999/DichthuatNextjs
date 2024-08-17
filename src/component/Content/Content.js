@@ -1,6 +1,7 @@
+'use client'
 import React, { Component } from 'react';
 import ReplaceValue from '@/component/replaceValue/ReplaceValue';
-import { getConvertText, getContentFromFireBase } from '@/component/firebase/Firebase';
+import { getContentFromFireBase } from '@/component/firebase/Firebase';
 import { Button } from 'react-bootstrap';
 
 class Content extends Component {

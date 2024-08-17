@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // output: 'export',
+  output: 'export',
   webpack: (config, { isServer }) => {
     config.module.rules.push({
       test: /\.(mp3|wav|ogg)$/,
@@ -26,4 +26,5 @@ const nextConfig = {
   },
 };
 
+// module.exports = nextConfig
 export default nextConfig;

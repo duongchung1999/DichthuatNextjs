@@ -229,7 +229,7 @@ class TumoiHandle extends Component {
 
     render() {
         return (
-            <div className='col-12 col-md-6 col-lg-6 col-xxl-2 gy-6 gx-2'>
+            <div className='col-6'>
                 {this.state.error && (
                     <div className='dichthuat-showError'>
                          Lỗi: &quot;{this.state.error.message}&quot;

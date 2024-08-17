@@ -9,15 +9,22 @@ export default function BaidichHandle({ params }) {
 }
 
 export async function generateStaticParams() {
-    const slugList = await getSlugList();
-    return slugList.map(slug => ({ params: { slug } }));
+    const slugPath = '/users/dichthuat';
+    const slugs = await getKeyValueFromFireBase(slugPath);
+    
+    // Extracting the 'key' from each item in the array
+    const slugList = slugs.map(({ key }) => key);
+    
+    return slugList.map(slug => ({ slug }));
 }
 
-async function getSlugList() {
-    const slugPath = `/users/dichthuat`;
-    const slugs = await getKeyValueFromFireBase(slugPath);
-    return Object.keys(slugs);
-}
+
+
+// async function getSlugList() {
+//     const slugPath = `/users/dichthuat`;
+//     const slugs = await getKeyValueFromFireBase(slugPath);
+//     return Object.keys(slugs);
+// }
 
 
 
