@@ -7,6 +7,7 @@ import ItemCardDashboard from '@/component/ItemCard/ItemCardDashboard';
 import userImage from '@/assets/image/user.jpg'
 import { formatDateTime } from '@/component/publicFc/PublicFunction';
 import LikedView from '@/component/LikedView/LikedView';
+import Image from 'next/image';
 
 // import '../styles/globals.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -431,7 +432,7 @@ function CommentItem(props) {
     return (
         <div className='itemCard-UserName'>
             <div className='itemCard-UserName-2'>
-                <img src={props.imgUser ? props.imgUser : userImage} alt="img" />
+                <Image src={props.imgUser ? props.imgUser : userImage} alt="img" width={500} height={500} />
                 <div className='itemCard-UserName-container'>
                     <div className='itemCard-UserName-container-1'>
                         <h6 className='username-card1'>{props.username}</h6>

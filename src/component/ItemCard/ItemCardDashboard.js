@@ -84,7 +84,7 @@ const ItemCardDashboard = React.memo((props) => {
             </div>
             {props.img && <Link href={props.link} passHref legacyBehavior>
                 <a className="itemCard-title-dashboard" onClick={props.cardClick}>
-                    <img src={props.img} alt="null" />
+                    <Image src={props.img} alt="null" width={500} height={500}/>
                 </a>
             </Link>}
 
@@ -130,7 +130,7 @@ const ItemCardDashboard = React.memo((props) => {
                             </div>
                             <div className='itemCard-comment-write'>
                                 <div className='itemCard-user-image'>
-                                    <img src={props.imgUser ? props.imgUser : userImage} alt="img" />
+                                    <Image src={props.imgUser ? props.imgUser : userImage} alt="img"  width={500} height={500}/>
                                 </div>
                                 <div className='comment-input-container'>
                                     <textarea

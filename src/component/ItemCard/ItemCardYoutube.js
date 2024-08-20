@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, memo, Suspense } from 'react';
+import Image from 'next/image';
 
 const ItemCardYoutube = memo((props) => {
         return (
@@ -18,7 +19,7 @@ const ItemCardYoutube = memo((props) => {
                 </h4>
                 <div className='itemCard-content-author'>
                     <div className='itemCard-content-author-container'>
-                        <img src={props.imgAuthor} alt="img" />
+                        <Image src={props.imgAuthor} alt="img" width={500} height={500}/>
                         <a href={props.webLink} target='_blank' rel='noreferrer'>
                             <h4>{props.author}</h4>
                         </a>
