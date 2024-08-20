@@ -55,8 +55,10 @@ class TumoiHandle extends Component {
                 await this.updateTumoiAtPath(userTuMoiPath, tumoi, nghiaList, hanviet, pinyin);
                 await this.updateTumoiAtPath(tumoiFbPath, tumoi, nghiaList, hanviet, pinyin); // Thêm dòng này để cập nhật lần nữa với tumoiFbPath
     
-                Swal.fire("Tạo bài mới thành công", "", "success");
+                // Swal.fire("Tạo bài mới thành công", "", "success");
                 this.setState({ nav: true });
+               
+                this.props.luuBaiDich();
                 this.props.getData();
             }
         } catch (error) {
@@ -83,7 +85,7 @@ class TumoiHandle extends Component {
                 const pinyinPath = `${path}/${tumoi}/nghia/${To_slug(nghiaItem.nghia)}/pinyin`;
                 const nghiaPath = `${path}/${tumoi}/nghia/${To_slug(nghiaItem.nghia)}/nghia`;
     
-                console.log(pinyinPath);
+                // console.log(pinyinPath);
     
                 await AddDataToFireBaseNoKey(nghiaPath, nghiaItem.nghia);
     
@@ -92,8 +94,8 @@ class TumoiHandle extends Component {
                     const nghiaviduPath = `${path}/${tumoi}/nghia/${To_slug(nghiaItem.nghia)}/vidu/${To_slug(viduItem.vidu)}/nghia`;
                     const pinyinViduPath = `${path}/${tumoi}/nghia/${To_slug(nghiaItem.nghia)}/vidu/${To_slug(viduItem.vidu)}/pinyin`;
                     const viduPath = `${path}/${tumoi}/nghia/${To_slug(nghiaItem.nghia)}/vidu/${To_slug(viduItem.vidu)}/vidu`;
-                    console.log(viduPath);
-                    console.log(pinyinViduPath);
+                    // console.log(viduPath);
+                    // console.log(pinyinViduPath);
                     await AddDataToFireBaseNoKey(nghiaviduPath, viduItem.nghiaVidu);
                     await AddDataToFireBaseNoKey(pinyinViduPath, viduItem.pinyinVidu);
                     await AddDataToFireBaseNoKey(viduPath, viduItem.vidu);
@@ -194,7 +196,7 @@ class TumoiHandle extends Component {
             const response = await axios.get(`https://api.hanzii.net/api/search/vi/${encodedChar}?type=word&page=1&limit=50`);
             if (response.data.found) {
                 const resultContent = response.data.result[0].content;
-                console.log(response.data.result)
+                // console.log(response.data.result)
                 let nghiaDataList = [];
     
                 // Lặp qua tất cả các phần tử trong content để thu thập means

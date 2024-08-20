@@ -39,7 +39,7 @@ export default function DichthuatViewerClient({bodich,baidich}) {
     // const baidich = params.baidich;
     const [expandedItems, setExpandedItems] = useState({});
     const [showMeanings, setShowMeanings] = useState({});
-    console.log(bodich,baidich)
+    // console.log(bodich,baidich)
 
     useEffect(() => {
         getData();
@@ -84,8 +84,14 @@ export default function DichthuatViewerClient({bodich,baidich}) {
                 AddDataToFireBaseNoKey(idPath,id),
                 AddDataToFireBaseNoKey(userImagePath,userImage)
             ]);
-
-            Swal.fire("Đăng bài thành công", "", "Thành công");
+            await Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Đăng bài thành công",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            
             setState(prevState => ({ ...prevState, nav: true }));
         }
         catch (error){
@@ -104,6 +110,7 @@ export default function DichthuatViewerClient({bodich,baidich}) {
     }
 
     const getData = async () => {
+        // await luuBaiDich();
         setLoading(true); 
     
         const user = localStorage.getItem("user");
@@ -201,13 +208,21 @@ export default function DichthuatViewerClient({bodich,baidich}) {
     
 
     const luuBaiDich = async () =>{
+        console.log(123)
         setLoading(true); 
         const { baiDich} = state;
         const user = localStorage.getItem("user");
         const userDichPath = `/users/dichthuat/${bodich}/listBaihoc/${baidich}/${user}/baidich`;
         try{
             await AddDataToFireBaseNoKey(userDichPath,baiDich);
-            Swal.fire("Tạo bài mới thành công", "", "success");
+            await Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Tạo bài mới thành công",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            
         }
         catch (error) {
             console.error('Lỗi tạo bài mới:', error);
@@ -266,6 +281,21 @@ export default function DichthuatViewerClient({bodich,baidich}) {
             [tuMoiKey + '-' + nghiaKey]: false,
         });
     };
+
+    const showNguyenVan = () =>{
+        const {noiDungBaiDich} = state;
+        if (noiDungBaiDich){
+            return (
+                <div className='noiDungBaiDich col-4'>
+                                 {console.log(noiDungBaiDich)}
+                                <pre>
+                                    {noiDungBaiDich ? noiDungBaiDich : ''}
+                                </pre>
+                            </div>
+            )
+        }
+        else return null
+    }
  
 
     const showTumoi = () => {
@@ -337,13 +367,13 @@ export default function DichthuatViewerClient({bodich,baidich}) {
     };
 
     const { tieude, baiDich, webLink, tieudeTiengTrung, author, imgAuthor, embedLink,noiDungBaiDich } = state;
-    console.log(state);
+    // console.log(state);
     return (
         <PageForm
             body={
                 <div>
                     <div className='dichthuat-container row'>
-                        <div className='col-4'>
+                        <div className='col-5'>
                             <div>
                             <ItemCardYoutube
                                 videoLink={embedLink ? embedLink : null}
@@ -356,11 +386,16 @@ export default function DichthuatViewerClient({bodich,baidich}) {
                             </div>
                             
                         </div>
-                        <div className='noiDungBaiDich col-4'>
+                        {noiDungBaiDich&&(
+                            
+                            <div className='noiDungBaiDich col-3'>
+                                 {console.log(noiDungBaiDich)}
                                 <pre>
                                     {noiDungBaiDich ? noiDungBaiDich : ''}
                                 </pre>
-                        </div>
+                            </div>
+                        )}
+                        
 
                         <div className='col'>
                             <div className="card border-primary">
@@ -412,7 +447,10 @@ export default function DichthuatViewerClient({bodich,baidich}) {
                                     {showTumoi()}
                                 </div>
                             </div>
-                            {openTumoiForm ? (<TumoiHandle getData={getData}/>) : null}
+                            {openTumoiForm ? (<TumoiHandle 
+                                getData={getData}
+                                luuBaiDich={()=>luuBaiDich()}
+                                />) : null}
                         </div>
                     </div>
                     {loading ? (

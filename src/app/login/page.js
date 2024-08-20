@@ -8,6 +8,8 @@ import imgPhat from '@/assets/image/phat3.png'
 import { getContentFromFireBase } from '@/component/firebase/Firebase';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { redirect } from 'next/navigation'
 
 class Login extends Component {
     state = { 
@@ -21,9 +23,10 @@ class Login extends Component {
         }));
     };
     componentDidMount() {
-        let token = localStorage.getItem("token");
-        if (token) {
+        let user = localStorage.getItem("user");
+        if (user) {
             this.setState({ user: true });
+            redirect('/')
         }
         window.addEventListener('click', this.playAudio);
     }
@@ -31,6 +34,11 @@ class Login extends Component {
     //     // Remove the event listener when the component unmounts
     //     window.removeEventListener('click', this.playAudio);
     // }
+    componentDidUpdate(){
+        if(this.state.user) {
+            redirect('/')
+        }
+    }
 
     playAudio = () => {
         if (this.audioRef) {
@@ -94,13 +102,14 @@ class Login extends Component {
                     if(image) localStorage.setItem('userImage',image);
                     // this.setWithExpiry('name', resName, 300 * 60 * 1000)
                     // if(role) this.setWithExpiry('role', role, 300 * 60 * 1000)
-                    Swal.fire({
+                    await Swal.fire({
                         position: "center",
                         icon: "success",
-                        title: "Login Success",
+                        title: "Đăng nhập thành công",
                         showConfirmButton: false,
                         timer: 1500
                     });
+                    
                     this.setState({ user:true });
                 }
                 else {

@@ -385,14 +385,15 @@
     background-color: #F2F2F2;
     
 }
-/* .itemCard-baiDich pre{
+.itemCard-baiDich pre{
     white-space: pre-wrap; 
     word-wrap: break-word; 
     font-family: cursive;
     line-height: 1.6;
     font-size: 20px;
+    /* min-height: 80vh;  */
     
-} */
+}
 pre{
     white-space: pre-wrap; 
     word-wrap: break-word; 

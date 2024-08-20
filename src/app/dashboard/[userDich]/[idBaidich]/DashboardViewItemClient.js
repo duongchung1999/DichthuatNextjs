@@ -58,7 +58,8 @@ export default function DashboardViewItemClient ({userDich,idBaidich}){
         const dateTimePath = `${baidichPath}/dateTime`;
         const idPath = `${baidichPath}/id`;
         const userNamePath = `${baidichPath}/username`;
-        const imgUserPath = `${baidichPath}/userImage`;
+        const imgUserPath = `/users/account/${userDich}/img`;
+        // const accountPath = `/users/account`;
 
         const [
             tieude,
@@ -160,7 +161,7 @@ export default function DashboardViewItemClient ({userDich,idBaidich}){
             body={
                 <div>
                     <div className='dichthuat-container row'>
-                        <div className='col-12 col-md-6 col-lg-6 col-xxl-2 gy-6 gx-2'>
+                        <div className='col-6'>
                             <div className='dichthuat-container-card' ref={containerCardRef}>
                                 <ItemCardYoutube
                                     videoLink={youtubeLink ? youtubeLink : null}
@@ -172,7 +173,7 @@ export default function DashboardViewItemClient ({userDich,idBaidich}){
                                 />
                             </div>
                         </div>
-                        <div className='col-12 col-md-6 col-lg-6 col-xxl-2 gy-6 gx-2'>
+                        <div className='col-6'>
                             {imgUser && <ItemCardUserPost
                                         imgUser={imgUser}
                                         username={userName}

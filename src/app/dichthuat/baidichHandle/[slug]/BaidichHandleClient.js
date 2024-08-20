@@ -82,7 +82,13 @@ export default  function BaidichHandleClient({slug}) {
                 AddDataToFireBaseNoKey(noiDungBaiDichPath, noiDungBaiDich)
             ]);
 
-            Swal.fire("Tạo bài mới thành công", "", "success");
+            await Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Tạo bài mới thành công",
+                showConfirmButton: false,
+                timer: 1500
+            });
             setState(prevState => ({ ...prevState, nav: true }));
         } catch (error) {
             console.error('Lỗi tạo bài mới:', error);

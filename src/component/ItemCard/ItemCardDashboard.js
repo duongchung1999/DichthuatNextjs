@@ -7,21 +7,40 @@ import userImage from '@/assets/image/user.jpg';
 import Image from 'next/image';
 
 const ItemCardDashboard = React.memo((props) => {
+    const [isFullTextShown, setIsFullTextShown] = useState(false);
     const truncateText = (text, maxLength) => {
-        if (text && text.length > maxLength) {
+        // if (text && text.length > maxLength) {
+        //     return (
+        //         <>
+        //             {text.substring(0, maxLength)}...
+        //             <span className="see-more">
+        //                 <Link href={props.link} legacyBehavior>
+        //                     <a>xem thêm</a>
+        //                 </Link>
+        //             </span>
+        //         </>
+        //     );
+        // }
+        // return text;
+        if (!isFullTextShown && text && text.length > maxLength) {
             return (
                 <>
                     {text.substring(0, maxLength)}...
-                    <span className="see-more">
-                        <Link href={props.link} legacyBehavior>
-                            <a>xem thêm</a>
-                        </Link>
+                    <span 
+                        className="see-more" 
+                        onClick={() => isFullTextDoubleClick()}
+                        style={{ cursor: 'pointer', color: 'blue' }}
+                    >
+                        xem thêm
                     </span>
                 </>
             );
         }
         return text;
     };
+    const isFullTextDoubleClick =() =>{
+        setIsFullTextShown(!isFullTextShown)
+    }
 
     const formatDateTime = (dateTime) => {
         if (!dateTime) return '';
@@ -36,6 +55,8 @@ const ItemCardDashboard = React.memo((props) => {
 
     const [isLiked, setIsLiked] = useState(false);
     const [commentText, setCommentText] = useState('');
+
+
 
     const handleLikeClick = () => {
         setIsLiked(!isLiked);
@@ -74,7 +95,7 @@ const ItemCardDashboard = React.memo((props) => {
 
             <div className='itemCard-baiDich'>
                 {props.img ?
-                    <pre>
+                    <pre  onDoubleClick={() => isFullTextDoubleClick()}>
                         {truncateText(props.baidich, 300)}
                     </pre>
                     :
