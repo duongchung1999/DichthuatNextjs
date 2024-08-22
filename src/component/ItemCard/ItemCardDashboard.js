@@ -64,11 +64,88 @@ const ItemCardDashboard = React.memo((props) => {
     };
 
     const handleCommentChange = (e) => {
-        setCommentText(e.target.value);
+        // setCommentText(e.target.value);
         if (props.onChangeHandle) {
             props.onChangeHandle(e);
         }
     };
+
+    const renderTrash=()=>{
+        const MyUserName = localStorage.getItem("name");
+        // console.log(props.username)
+        if(props.username==MyUserName){
+            return (
+                <div className='itemCard-UserName-1'>
+                    <button
+                        className="btn btn-options"
+                        onClick={props.removeClick}
+                        style={{ padding: '0', margin: '0' }}
+                    >
+                        <i className="fa-solid fa-trash" />
+                    </button>
+                </div>
+            )
+        }
+        else return null;
+    }
+
+    const renderLikeArea=()=>{
+        const MyUserName = localStorage.getItem("name");
+        if(MyUserName) {
+            return (
+                <div className='row'>
+                            <div className='col-6 ItemCard-interact-item' onClick={handleLikeClick}>
+                                <div className={`ItemCard-interact-item-flex ${props.isLiked ? 'liked' : ''}`}>
+                                    <i className={`fa-regular fa-thumbs-up ${props.isLiked ? 'liked-icon' : ''}`}></i>
+                                    <span>Thích</span>
+                                </div>
+
+                            </div>
+
+                            <div className='col-6 ItemCard-interact-item' onClick={props.cmtClick}>
+                                <div className='ItemCard-interact-item-flex'>
+                                    <i className="fa-regular fa-comment"></i>
+                                    <span>Bình luận</span>
+                                </div>
+
+                            </div>
+                </div>
+            )
+        }
+        else return null;
+
+    }
+
+    const renderCommentInput=()=>{
+        const MyUserName = localStorage.getItem("name");
+        const imgUser = localStorage.getItem("userImage")||userImage;
+        if(MyUserName){
+            return(
+                <div className='itemCard-comment-write'>
+                    <div className='itemCard-user-image'>
+                        <Image src={imgUser} alt="img"  width={500} height={500}/>
+                    </div>
+                
+                    <div className='comment-input-container'>
+                        <textarea
+                            className="form-control comment-input"
+                            name={props.name}
+                            aria-describedby="helpId"
+                            placeholder={"Bình luận với vai trò " + MyUserName}
+                            onChange={handleCommentChange}
+                            value={props.commentText}
+                        ></textarea>
+                        <div className={`itemCard-comment-send  ${props.commentText ? 'active1' : 'no-item'}`}
+                            onClick={props.sendCmtHandle}>
+                            <i className={`fa-solid fa-paper-plane`}></i>
+                        </div>
+                    </div>
+
+                </div> 
+            )
+        }
+        else return null;
+    }
 
     return (
         <div className='itemCard-container-dashboard' onClick={props.cardClick} onMouseEnter={props.cardClick}>
@@ -82,15 +159,7 @@ const ItemCardDashboard = React.memo((props) => {
                         <p style={{ margin: '0' }}>{formatDateTime(props.dateTime)}</p>
                     </div>
                 </div>
-                <div className='itemCard-UserName-1'>
-                    <button
-                        className="btn btn-options"
-                        onClick={props.removeClick}
-                        style={{ padding: '0', margin: '0' }}
-                    >
-                        <i className="fa-solid fa-trash" />
-                    </button>
-                </div>
+                {renderTrash()}
             </div>
 
             <div className='itemCard-baiDich'>
@@ -126,49 +195,15 @@ const ItemCardDashboard = React.memo((props) => {
                             </span>
                         </div>
                         <hr />
-                        <div className='row'>
-                            <div className='col-6 ItemCard-interact-item' onClick={handleLikeClick}>
-                                <div className={`ItemCard-interact-item-flex ${props.isLiked ? 'liked' : ''}`}>
-                                    <i className={`fa-regular fa-thumbs-up ${props.isLiked ? 'liked-icon' : ''}`}></i>
-                                    <span>Thích</span>
-                                </div>
-
-                            </div>
-
-                            <div className='col-6 ItemCard-interact-item' onClick={props.cmtClick}>
-                                <div className='ItemCard-interact-item-flex'>
-                                    <i className="fa-regular fa-comment"></i>
-                                    <span>Bình luận</span>
-                                </div>
-
-                            </div>
-                        </div>
+                        {renderLikeArea()}
                     </div>
                     <div className='itemCard-comment'>
                         <div className='itemCard-comment-container'>
                             <div className='itemCard-comment-viewer'>
                                 {props.comment}
                             </div>
-                            <div className='itemCard-comment-write'>
-                                <div className='itemCard-user-image'>
-                                    <Image src={props.imgUser ? props.imgUser : userImage} alt="img"  width={500} height={500}/>
-                                </div>
-                                <div className='comment-input-container'>
-                                    <textarea
-                                        className="form-control comment-input"
-                                        name={props.name}
-                                        aria-describedby="helpId"
-                                        placeholder={"Bình luận với vai trò " + props.username}
-                                        onChange={handleCommentChange}
-                                        value={commentText}
-                                    ></textarea>
-                                    <div className={`itemCard-comment-send  ${commentText ? 'active1' : 'no-item'}`}
-                                        onClick={props.sendCmtHandle}>
-                                        <i className={`fa-solid fa-paper-plane`}></i>
-                                    </div>
-                                </div>
-
-                            </div>
+                            
+                            {renderCommentInput()}
                         </div>
                     </div>
                 </div>

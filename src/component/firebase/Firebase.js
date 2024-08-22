@@ -286,7 +286,7 @@ async function getValueFromPath(path) {
         if (snapshot.exists()) {
             return snapshot.val();
         } else {
-            console.log("Không có dữ liệu tại đường dẫn này.");
+            // console.log("Không có dữ liệu tại đường dẫn này.");
             return null;
         }
     } catch (error) {
@@ -303,7 +303,7 @@ function getKeyValueFromFireBase(path){
                 var formattedData = Object.entries(data).map(([key, value]) => ({ key, value }));
                 resolve(formattedData);
             } else {
-                console.log("Không có dữ liệu tại đường dẫn này.");
+                // console.log("Không có dữ liệu tại đường dẫn này.");
                 resolve(null);
             }
         }).catch((error) => {

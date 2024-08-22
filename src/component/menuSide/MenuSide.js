@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './MenuSide.css';
 // import { NavLink } from 'react-router-dom';
 import Link from 'next/link';
+import { isLogin } from '../publicFc/PublicFunction';
+import { isAdmin } from '../publicFc/PublicFunction';
 
 
 class MenuSide extends Component {
@@ -9,6 +11,8 @@ class MenuSide extends Component {
         super(props);
         this.state = {
             viewMenuSide2nd: false,
+            flagLogin: false,
+            flagAdmin: false,
         };
     }
 
@@ -17,6 +21,12 @@ class MenuSide extends Component {
             this.setState({
                 viewMenuSide2nd: localStorage.getItem("viewItAsset") ? localStorage.getItem("viewItAsset") : false,
             });
+        }
+        if(isLogin()){
+            this.setState({flagLogin:true})
+        }
+        if(isAdmin()){
+            this.setState({flagAdmin:true})
         }
     }
 
@@ -38,9 +48,9 @@ class MenuSide extends Component {
         if(this.state.viewMenuSide2nd){
             return(
                 <div className='menuSide-2nd'>
-                    <NavItem path="/stickynote" itemName="Sticky Notes" icon = {<i className="nav-icon fa-solid fa-file-pen"></i>}/>
-                    <NavItem path="/convertText" itemName="Chuyển đổi text" icon = {<i class="nav-icon fa-solid fa-font"></i>}/>
-                    <NavItem path="/tudiendich" itemName="Từ điển dịch" icon = {<i class="nav-icon fa-solid fa-shuffle"></i>}/>
+                    {this.state.flagAdmin&&<NavItem path="/stickynote" itemName="Sticky Notes" icon = {<i className="nav-icon fa-solid fa-file-pen"></i>}/>}
+                    {this.state.flagAdmin&&<NavItem path="/convertText" itemName="Chuyển đổi text" icon = {<i class="nav-icon fa-solid fa-font"></i>}/>}
+                    {this.state.flagAdmin&&<NavItem path="/tudiendich" itemName="Từ điển dịch" icon = {<i class="nav-icon fa-solid fa-shuffle"></i>}/>}
                     <NavItem path="/nhidonghocphat" itemName="Nhi đồng học Phật" icon = {<i className="nav-icon fa-solid fa-earth-americas"></i>}/>
                     <NavItem path="/jiaocheng" itemName="TKPS Gia Ngôn Lục" icon = {<i class="nav-icon fa-solid fa-book-journal-whills"></i>}/>
                     <NavItem path="/pdfGiaotrinh" itemName="PDF TKPS Gia Ngôn Lục" icon = {<i class="nav-icon fa-solid fa-file-pdf"></i>}/>
@@ -64,17 +74,13 @@ class MenuSide extends Component {
                     <div className='menuSide-item'>
                         <ul className="menuSide-nav">
                 
-                            <NavItem path="/" itemName="Bảng tin" icon = {<i class="nav-icon fa-solid fa-newspaper"></i>}/>
-                            <NavItem path="/dichthuat" itemName="Dịch Thuật" icon = {<i className="nav-icon fa-solid fa-house"></i>}/>
-                            
-                            <NavItem path="/tddkkc" itemName="Tịnh Độ Đại Kinh" icon = {<i className="nav-icon fa-solid fa-book"></i>}/>
-                            {/* <NavItem path="/youtube" itemName="Video" icon = {<i className="nav-icon fa-brands fa-youtube"></i>}/> */}
+                           
                            
                             
                             <li className='menuSide-it-asset' onClick={this.viewItem}>
                                 <a className='nav-link'>
                                     <i class="nav-icon fa-solid fa-toolbox"></i>
-                                    Cập nhật bài học
+                                    Tài liệu tham khảo
                                     {this.renderItemAsset()}
                                     
                                     

@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "bdu": "rm -rf node_modules/.cache && next build && touch out/.nojekyll && cp -rf ./out/*  D:/Workspace/NextJs/HocDichChuHan/out && cd D:/Workspace/NextJs/HocDichChuHan/out && git add -A && git commit -m 'release' && git push --set-upstream origin master",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

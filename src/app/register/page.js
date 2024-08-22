@@ -8,9 +8,15 @@ import { getContentFromFireBase } from '@/component/firebase/Firebase';
 import { AddDataToFireBaseNoKey } from '@/component/firebase/Firebase';
 import Link from 'next/link';
 import Image from 'next/image';
+import { redirect } from 'next/navigation'
 
 class Register extends Component {
     state = { user: null, error: null,showPassword:false,showConfirmPassword:false };
+    componentDidUpdate(){
+        if(this.state.user) {
+            redirect('/login')
+        }
+    }
     togglePasswordVisibility = () => {
         this.setState(prevState => ({
             showPassword: !prevState.showPassword
@@ -35,8 +41,12 @@ class Register extends Component {
         const EmailPath = `/users/account/${username}/email`
         const NamePath = `/users/account/${username}/name`
 
+        // const isValidPassword = (password) => {
+        //     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/;
+        //     return passwordRegex.test(password);
+        // };
         const isValidPassword = (password) => {
-            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/;
+            const passwordRegex = /^.{8,}$/;
             return passwordRegex.test(password);
         };
 
@@ -80,7 +90,8 @@ class Register extends Component {
             }
             else if (!isValidPassword(password)) {
                 let error = {
-                    message: "Mật khẩu phải có ít nhất 8 ký tự, chứa ít nhất một chữ hoa, một chữ thường, một số và một ký tự đặc biệt"
+                    // message: "Mật khẩu phải có ít nhất 8 ký tự, chứa ít nhất một chữ hoa, một chữ thường, một số và một ký tự đặc biệt"
+                    message: "Mật khẩu phải có ít nhất 8 ký tự"
                 };
                 Swal.fire(error.message, "", "info");
                 this.setState({ error });
@@ -108,7 +119,7 @@ class Register extends Component {
                         this.setState({ error });
                     }
                     else{
-                        Swal.fire("Đăng ký thành công. Vui lòng đăng nhập lại để tiếp tục", "", "success");
+                        await Swal.fire("Đăng ký thành công. Vui lòng đăng nhập lại để tiếp tục", "", "success");
                         this.setState({ user:true });
                     }
 

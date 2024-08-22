@@ -71,7 +71,8 @@
 }
 
 .nav-icon  {
-    padding: 0 10px;
+    /* padding: 10px; */
+    margin-right: 10px;
     width:  15px;
 }
 .menuSide-footer{
@@ -82,18 +83,7 @@
     padding-bottom: 20px;
     margin: 0;
 }
-.menuSide .menuSide-2nd{
-    /* display: none; */
-    /* display: none;   */
-    /* background-color: #495158; */
-    /* position: absolute; */
-    margin-top: 16px;
-    /* margin-left: -10px; */
-    width: 110px;
-    left: 0;
-    /* padding-left: 24px; */
-    flex-direction: column;
-}
+
 .menuSide .menuSide-it-asset:hover{
     height: auto;
 }

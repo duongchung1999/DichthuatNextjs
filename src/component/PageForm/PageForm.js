@@ -13,6 +13,7 @@ class PageForm extends Component  {
   }
 
   toggleMenuSideVisibility = () => {
+    console.log(234);
       this.setState(prevState => ({
           isMenuSideVisible: !prevState.isMenuSideVisible
       }));
@@ -24,7 +25,7 @@ class PageForm extends Component  {
         <NavHeader toggleMenuSide={this.toggleMenuSideVisibility}/>
         <div className='UserContainer d-md-inline-block'>
           <div className='UserContainer-block'>
-            {this.state.isMenuSideVisible && <MenuSide />}
+            {/* {this.state.isMenuSideVisible && <MenuSide />} */}
             <div className='table-container col' id='table-container'>
               <div className='table-container-header'>
                 {this.props.body}

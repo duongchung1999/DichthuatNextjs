@@ -1,12 +1,13 @@
 "use client"
 import React, { Component } from 'react';
 import PageForm from '@/component/PageForm/PageForm';
-
+import WaitingLoad from '@/component/WaitingLoad/WaitingLoad';  
 class ViewerWebsite extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isMenuOnClick: true
+            isMenuOnClick: true,
+            loading: true,
         };
     }
       menuOnClick = () =>{
@@ -14,6 +15,9 @@ class ViewerWebsite extends Component {
         this.setState(prevState =>({
             isMenuOnClick : !prevState.isMenuOnClick
         }))
+    }
+    handleIframeLoad = () => {
+        this.setState({ loading: false }); // Khi iframe đã tải xong, cập nhật state
     }
     render() {
         return (
@@ -26,7 +30,11 @@ class ViewerWebsite extends Component {
                         height="1000px" 
                         style={{border: "none"}}
                         title="Hanzii"
+                        onLoad={this.handleIframeLoad} 
                     ></iframe>
+                    {this.state.loading ? (
+                        <WaitingLoad />
+                    ) : null}
                 </>}/>
             
         );

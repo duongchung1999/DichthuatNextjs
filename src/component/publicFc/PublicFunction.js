@@ -17,17 +17,13 @@ const formatDateTime = (dateTime) => {
 };
 
 
+
 function ItemCardUserPost(props){
-    return(
-         <div className='itemCard-container-dashboard' ref={props.refViewBaidich}>
-            <div className='itemCard-UserName itemcard-UserName-sticky'>
-                <div className='itemCard-UserName-1'>
-                    <Image src={props.imgUser ? props.imgUser : userImage} alt="img" width={30} height={30}/>
-                    <div className='itemCard-UserName-container'>
-                        <h4 className='username-card'>{props.username}</h4>
-                        <p style={{ margin: '0' }}>{formatDateTime(props.dateTime)}</p>
-                    </div>
-                </div>
+    const renderTrash =()=>{
+        const MyUserName = localStorage.getItem("name");
+        console.log(MyUserName)
+        if (props.username==MyUserName){
+            return(
                 <div className='itemCard-UserName-1'> 
                     <button
                         className="btn btn-options"
@@ -38,6 +34,21 @@ function ItemCardUserPost(props){
                         <i className="fa-solid fa-trash" />
                     </button>
                 </div>
+            )
+        }
+        else return null
+    }
+    return(
+         <div className='itemCard-container-dashboard' ref={props.refViewBaidich}>
+            <div className='itemCard-UserName itemcard-UserName-sticky'>
+                <div className='itemCard-UserName-1'>
+                    <Image src={props.imgUser ? props.imgUser : userImage} alt="img" width={30} height={30}/>
+                    <div className='itemCard-UserName-container'>
+                        <h4 className='username-card'>{props.username}</h4>
+                        <p style={{ margin: '0' }}>{formatDateTime(props.dateTime)}</p>
+                    </div>
+                </div>
+                {renderTrash()}
             </div>
 
             <div className='itemCard-baiDich'>
@@ -50,6 +61,20 @@ function ItemCardUserPost(props){
     )
 }
 
+function isLogin(){
+    const MyUserName = localStorage.getItem("name");
+    if(MyUserName) return true;
+    return false
+}
+
+function isAdmin(){{
+    const user = localStorage.getItem("user");
+    if(user=="duong171099") return true;
+    return false
+}}
+
 
 export {formatDateTime}
 export {ItemCardUserPost}
+export {isLogin}
+export {isAdmin}

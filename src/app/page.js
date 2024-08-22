@@ -61,7 +61,7 @@ class Dashboard extends Component {
                     const [comments, likes, username, userImage, tieude, tieudeTiengTrung, author, imgAuthor, link, weblink, dateTime, id, baidich] = await Promise.all([
                         getKeyValueFromFireBase(`${dashboardPath}/${key}/${baiviet.key}/comment`),
                         getKeyValueFromFireBase(`${dashboardPath}/${key}/${baiviet.key}/like`),
-                        getValueFromPath(`${dashboardPath}/${key}/name`),
+                        getValueFromPath(`${accountPath}/${key}/name`),
                         getValueFromPath(`${accountPath}/${key}/img`),
                         getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/tieude`),
                         getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/tieudeTiengTrung`),
@@ -284,6 +284,7 @@ class Dashboard extends Component {
                     [baivietKey]: ''
                 }
             }));
+            // this.setState({commentTexts:null})
         }
     };
 
@@ -350,6 +351,7 @@ class Dashboard extends Component {
     // }
 
     handleCommentChange = (baivietKey, e) => {
+        // console.log(this.state.commentTexts)
         this.setState(prevState => ({
             commentTexts: {
                 ...prevState.commentTexts,
@@ -382,9 +384,10 @@ class Dashboard extends Component {
                         removeClick={() => this.removeClick(path, baivietKey, false)}
                         sendCmtHandle={() => this.sendCmtHandle(path, baivietKey)}
                         commentText={commentTexts[baivietKey] || ''}
-                        handleCommentChange={(e) => this.handleCommentChange(baivietKey, e)}
+                        onChangeHandle={(e) => this.handleCommentChange(baivietKey, e)}
                         likeClick={() => this.likeClick(path, baivietKey, isLikedMap[baivietKey])}
                         isLiked={isLikedMap[baivietKey]}
+                    
                     />
                 );
             });
@@ -429,6 +432,23 @@ class Dashboard extends Component {
 export default Dashboard;
 
 function CommentItem(props) {
+    const renderTrash=()=>{
+        const MyUserName = localStorage.getItem("name");
+        if(MyUserName==props.username){
+            return(
+                <div className='itemCard-UserName-1'> 
+                    <button
+                        className="btn btn-options"
+                        onClick={props.removeClick}
+                        style={{padding:'0',margin:'0'}}
+                    >
+                        <i className="fa-solid fa-trash" />
+                    </button>
+                </div>
+            )
+        }
+        else return null;
+    }
     return (
         <div className='itemCard-UserName'>
             <div className='itemCard-UserName-2'>
@@ -442,15 +462,8 @@ function CommentItem(props) {
                 </div>
             </div>
             
-            <div className='itemCard-UserName-1'> 
-                <button
-                    className="btn btn-options"
-                    onClick={props.removeClick}
-                    style={{padding:'0',margin:'0'}}
-                >
-                    <i className="fa-solid fa-trash" />
-                </button>
-            </div>
+            {renderTrash()}
+
         </div>
     );
 }
