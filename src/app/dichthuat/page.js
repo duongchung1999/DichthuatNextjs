@@ -21,12 +21,27 @@ class DichThuatList extends Component {
             imgAuthors: {} ,
             ids: {} ,
             loading: true, 
+            flagLogin:false,
         };
     }
 
     componentDidMount(){
         this.getDichThuat();
+        this.isLogin();
     }
+    isLogin(){
+        const MyUserName = localStorage.getItem("name");
+        if(MyUserName) {
+            this.setState({ flagLogin: true });
+        };
+        
+    }
+    
+    isAdmin(){{
+        const user = localStorage.getItem("user");
+        if(user=="duong171099") return true;
+        return false
+    }}
 
     getDichThuat = async () => {
         try {
@@ -142,17 +157,25 @@ class DichThuatList extends Component {
         const videoId = yt[1] ? yt[1].split('&')[0] : "null";
         return videoId;
     }
-
-    render() {
-        return (
-            <PageForm body={
-                <div>
+    renderAddButton = () =>{
+        if(this.state.flagLogin){
+            return(
                     <Link href="/dichthuat/dichthuatHandle">
                         <Button variant="info" >
                             Edit
                             <i className="fa-solid fa-calendar-plus"></i>
                         </Button>
-                    </Link>
+                    </Link>     
+            )
+        }
+        else return null
+    }
+
+    render() {
+        return (
+            <PageForm body={
+                <div>
+                    {this.renderAddButton()}
 
                     <div className='dichthuat-container row'>
                             {this.showDichThuat()}

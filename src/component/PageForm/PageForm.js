@@ -1,5 +1,5 @@
-import './PageForm.css';
-import NavHeader from '@/component/Header/NavHeader';
+// import './PageForm.css';
+import NavHeader from '@/app/Header/NavHeader';
 import MenuSide from '@/component/menuSide/MenuSide';
 import React, { Component } from 'react';
 
@@ -20,9 +20,10 @@ class PageForm extends Component  {
   }
 
   render (){
+    console.log(this.props.flagAdmin)
     return (
       <div className="sb-nav-fixed">
-        <NavHeader toggleMenuSide={this.toggleMenuSideVisibility}/>
+        <NavHeader toggleMenuSide={this.toggleMenuSideVisibility} flagLogin={this.props.flagLogin} flagAdmin={this.props.flagAdmin}/>
         <div className='UserContainer d-md-inline-block'>
           <div className='UserContainer-block'>
             {/* {this.state.isMenuSideVisible && <MenuSide />} */}

@@ -7,18 +7,33 @@ import ItemCard from '@/component/ItemCard/ItemCard';
 import { getKeyValueFromFireBase, getValueFromPath } from '@/component/firebase/Firebase';
 import WaitingLoad from '@/component/WaitingLoad/WaitingLoad';
 import Link from 'next/link';
+// import { isLogin } from '@/component/publicFc/PublicFunction';
+// import { isAdmin } from '@/component/publicFc/PublicFunction';
 
 export default function DichThuatDetailsClient({ slug }) {
     const [dichthuats, setDichthuats] = useState([]);
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [flagAdmin, setFlagAdmin] = useState(false);
+    const [flagLogin, setFlagLogin] = useState(false);
 
     useEffect(() => {
         if (slug) {
             getDichThuat();
+            isAdmin();
+            isLogin();
         }
+        
     }, [slug]);
-
+    const isLogin =()=>{
+        const MyUserName = localStorage.getItem("name");
+        if(MyUserName) setFlagLogin(true)
+    }
+    
+    const isAdmin=()=>{
+        const user = localStorage.getItem("user");
+        if(user=="duong171099") setFlagAdmin(true);
+    }
     const getDichThuat = async () => {
         setLoading(true);
         const dichthuatPath = `/users/dichthuat/${slug}/listBaihoc`;
@@ -57,17 +72,27 @@ export default function DichThuatDetailsClient({ slug }) {
         const videoId = yt[1] ? yt[1].split('&')[0] : "null";
         return videoId;
     };
+    const renderAddButton = () =>{
+        if(flagAdmin){
+            return (
+                <Link href={`/dichthuat/baidichHandle/${slug}`}>
+                    <Button variant="info">
+                        Edit
+                        <i className="fa-solid fa-calendar-plus"></i>
+                    </Button>
+                </Link>
+            )
+        }
+        else return null;
+    }
 
     return (
-        <PageForm
+       
+        <PageForm flagAdmin={flagAdmin} flagLogin={flagLogin}
             body={
+                
                 <div>
-                    <Link href={`/dichthuat/baidichHandle/${slug}`}>
-                        <Button variant="info">
-                            Edit
-                            <i className="fa-solid fa-calendar-plus"></i>
-                        </Button>
-                    </Link>
+                    {renderAddButton()};
                     <div className='dichthuat-container row row-cols-6 row-cols-xxxxxl-5 row-cols-xxxxl-4 row-cols-xl-3 row-cols-lg-2 gy-6 gx-xxl-2 gx-xl-3 gx-lg-2'>
                         {data.map((dichthuat, index) => {
                             const tieude = dichthuat.tieude;

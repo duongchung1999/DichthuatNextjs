@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 import { vi } from 'date-fns/locale';
-import './PublicFunction.css'
+// import './PublicFunction.css'
 import React, { useState,Component } from 'react';
 import userImage from '@/assets/image/user.jpg';
 import Image from 'next/image';
@@ -61,20 +61,8 @@ function ItemCardUserPost(props){
     )
 }
 
-function isLogin(){
-    const MyUserName = localStorage.getItem("name");
-    if(MyUserName) return true;
-    return false
-}
 
-function isAdmin(){{
-    const user = localStorage.getItem("user");
-    if(user=="duong171099") return true;
-    return false
-}}
 
 
 export {formatDateTime}
 export {ItemCardUserPost}
-export {isLogin}
-export {isAdmin}

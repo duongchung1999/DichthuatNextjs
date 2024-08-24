@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { format } from 'date-fns';
 import { vi } from 'date-fns/locale'; 
 import Link from 'next/link'; 
-import './ItemCard.css';
+// import './ItemCard.css';
 import userImage from '@/assets/image/user.jpg';
 import Image from 'next/image';
 

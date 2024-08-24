@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './WaitingLoad.css';
+// import './WaitingLoad.css';
 import loadingGif from '@/assets/image/Loading.gif';
 import Image from 'next/image';
 

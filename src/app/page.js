@@ -34,13 +34,14 @@ class Dashboard extends Component {
             loading: false,
             commentTexts: {},
             isLikedMap: {}, 
+            flagLogin:false,
+            flagAdmin:false,
         };
     }
 
     componentDidMount() {
         this.getData();
     }
-
     getData = async () => {
         this.setState({ loading: true });
     
@@ -417,7 +418,7 @@ class Dashboard extends Component {
 
     render() {
         return (
-            <PageForm body={
+            <PageForm  body={
                 <div className='container'>
                     {this.showBaidich()}
                     {this.state.loading ? (

@@ -1,5 +1,5 @@
 import React from 'react';
-import DichThuatDetailsClient from './DichThuatDetailsClient';
+import DichThuatDetailsClient from './DichthuatDetailsClient';
 import { getKeyValueFromFireBase } from '@/component/firebase/Firebase';
 
 export default function DichThuatDetails({ params }) {

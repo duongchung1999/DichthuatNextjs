@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import './MenuSide.css';
+// import './MenuSide.css';
 // import { NavLink } from 'react-router-dom';
 import Link from 'next/link';
-import { isLogin } from '../publicFc/PublicFunction';
-import { isAdmin } from '../publicFc/PublicFunction';
 
 
 class MenuSide extends Component {
@@ -21,12 +19,6 @@ class MenuSide extends Component {
             this.setState({
                 viewMenuSide2nd: localStorage.getItem("viewItAsset") ? localStorage.getItem("viewItAsset") : false,
             });
-        }
-        if(isLogin()){
-            this.setState({flagLogin:true})
-        }
-        if(isAdmin()){
-            this.setState({flagAdmin:true})
         }
     }
 
@@ -48,9 +40,9 @@ class MenuSide extends Component {
         if(this.state.viewMenuSide2nd){
             return(
                 <div className='menuSide-2nd'>
-                    {this.state.flagAdmin&&<NavItem path="/stickynote" itemName="Sticky Notes" icon = {<i className="nav-icon fa-solid fa-file-pen"></i>}/>}
-                    {this.state.flagAdmin&&<NavItem path="/convertText" itemName="Chuyển đổi text" icon = {<i class="nav-icon fa-solid fa-font"></i>}/>}
-                    {this.state.flagAdmin&&<NavItem path="/tudiendich" itemName="Từ điển dịch" icon = {<i class="nav-icon fa-solid fa-shuffle"></i>}/>}
+                    {<NavItem path="/stickynote" itemName="Sticky Notes" icon = {<i className="nav-icon fa-solid fa-file-pen"></i>}/>}
+                    {<NavItem path="/convertText" itemName="Chuyển đổi text" icon = {<i class="nav-icon fa-solid fa-font"></i>}/>}
+                    {<NavItem path="/tudiendich" itemName="Từ điển dịch" icon = {<i class="nav-icon fa-solid fa-shuffle"></i>}/>}
                     <NavItem path="/nhidonghocphat" itemName="Nhi đồng học Phật" icon = {<i className="nav-icon fa-solid fa-earth-americas"></i>}/>
                     <NavItem path="/jiaocheng" itemName="TKPS Gia Ngôn Lục" icon = {<i class="nav-icon fa-solid fa-book-journal-whills"></i>}/>
                     <NavItem path="/pdfGiaotrinh" itemName="PDF TKPS Gia Ngôn Lục" icon = {<i class="nav-icon fa-solid fa-file-pdf"></i>}/>

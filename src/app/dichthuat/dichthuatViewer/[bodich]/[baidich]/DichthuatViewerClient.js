@@ -5,7 +5,6 @@ import { Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { getValueFromPath, getKeyValueFromFireBase,AddDataToFireBaseNoKey } from '@/component/firebase/Firebase';
 import ItemCardYoutube from '@/component/ItemCardYoutube/ItemCardYoutube';
-import './DichthuatViewer.css';
 import TumoiHandle from '@/component/TumoiHandle/TumoiHandle';
 import WaitingLoad from '@/component/WaitingLoad/WaitingLoad';
 

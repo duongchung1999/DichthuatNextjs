@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import './ItemCard.css';
+// import './ItemCard.css';
 import Image from 'next/image';
 
 const defaultImage = 'https://www.lifedna.com.tw/upload-files/motto/pic/1291771141.jpg?v=2016'; // Đường dẫn đến hình ảnh mặc định

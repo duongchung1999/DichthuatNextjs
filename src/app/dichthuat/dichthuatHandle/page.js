@@ -1,7 +1,6 @@
 "use client"
 import React, { Component } from 'react';
 import PageForm from '@/component/PageForm/PageForm';
-import './DichthuatHandle.css'
 import ItemCard from '@/component/ItemCard/ItemCard';
 import { Button } from 'react-bootstrap';
 import { getContentFromFireBase, AddDataToFireBaseNoKey} from '@/component/firebase/Firebase';

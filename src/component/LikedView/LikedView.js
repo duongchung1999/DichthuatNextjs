@@ -1,4 +1,4 @@
-import './LikedView.css';
+// import './LikedView.css';
 import React, { useState,useEffect } from 'react';
 
 const LikedView = ({ likes }) => {

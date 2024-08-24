@@ -3,9 +3,10 @@ import React, { Component } from 'react';
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
 import Link from 'next/link';
-import './NavHeader.css';
-import { isLogin } from '../publicFc/PublicFunction';
-import { isAdmin } from '../publicFc/PublicFunction';
+// import './NavHeader.css';
+// import { isLogin } from '../publicFc/PublicFunction';
+// import { isAdmin } from '../publicFc/PublicFunction';
+import { redirect } from 'next/navigation'
 
 // const NavHeaderWrapper = () => {
 //     const router = useRouter();
@@ -24,14 +25,18 @@ class NavHeader extends Component {
     componentDidMount() {
         const userName = localStorage.getItem("name"); // Access localStorage in componentDidMount
         this.setState({ userName });
-
-        if(isLogin()){
-            this.setState({flagLogin:true})
-        }
-        if(isAdmin()){
-            this.setState({flagAdmin:true})
-        }
+        this.isAdmin();
+        this.isLogin();
     }
+    isLogin(){
+        const MyUserName = localStorage.getItem("name");
+        if(MyUserName) this.setState({flagLogin:true})
+    }
+    
+    isAdmin(){{
+        const user = localStorage.getItem("user");
+        if(user=="duong171099") this.setState({flagAdmin:true})
+    }}
 
     toggleDropdown = () => {
         this.setState(prevState => ({ isDropdownOpen: !prevState.isDropdownOpen }));
@@ -63,7 +68,8 @@ class NavHeader extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (this.state.logout && !prevState.logout) {
-            this.props.router.push('/login');
+            // this.props.router.push('/login');
+            redirect('/login');
         }
     }
     renderItemAsset = () =>{
@@ -71,11 +77,11 @@ class NavHeader extends Component {
             return(
                 <div className='menuSide-2nd'>
                     {this.state.flagAdmin&&<NavItem path="/stickynote" itemName="Sticky Notes" icon = {<i className="nav-icon fa-solid fa-file-pen"></i>}/>}
-                    {this.state.flagAdmin&&<NavItem path="/convertText" itemName="Chuyển đổi text" icon = {<i class="nav-icon fa-solid fa-font"></i>}/>}
-                    {this.state.flagAdmin&&<NavItem path="/tudiendich" itemName="Từ điển dịch" icon = {<i class="nav-icon fa-solid fa-shuffle"></i>}/>}
+                    {this.state.flagAdmin&&<NavItem path="/convertText" itemName="Chuyển đổi text" icon = {<i className="nav-icon fa-solid fa-font"></i>}/>}
+                    {this.state.flagAdmin&&<NavItem path="/tudiendich" itemName="Từ điển dịch" icon = {<i className="nav-icon fa-solid fa-shuffle"></i>}/>}
                     <NavItem path="/nhidonghocphat" itemName="Nhi đồng học Phật" icon = {<i className="nav-icon fa-solid fa-earth-americas"></i>}/>
-                    <NavItem path="/jiaocheng" itemName="TKPS Gia Ngôn Lục" icon = {<i class="nav-icon fa-solid fa-book-journal-whills"></i>}/>
-                    <NavItem path="/pdfGiaotrinh" itemName="PDF TKPS Gia Ngôn Lục" icon = {<i class="nav-icon fa-solid fa-file-pdf"></i>}/>
+                    <NavItem path="/jiaocheng" itemName="TKPS Gia Ngôn Lục" icon = {<i className="nav-icon fa-solid fa-book-journal-whills"></i>}/>
+                    <NavItem path="/pdfGiaotrinh" itemName="PDF TKPS Gia Ngôn Lục" icon = {<i className="nav-icon fa-solid fa-file-pdf"></i>}/>
                     <NavItem path="/hanzi" itemName="Từ điển Hanzi" icon = {<i className="nav-icon fa-solid fa-language"></i>}/>
                 
                 </div>
@@ -106,12 +112,12 @@ class NavHeader extends Component {
                     <BtnLink toggleMenuSideVisibility={this.toggleMenuSideVisibility} />
                 </div>
                 <ul className='menuSide-column'>
-                    <NavItem path="/" itemName="Bảng tin" icon = {<i class="nav-icon fa-solid fa-newspaper"></i>}/>
+                    <NavItem path="/" itemName="Bảng tin" icon = {<i className="nav-icon fa-solid fa-newspaper"></i>}/>
                     {this.state.flagLogin&&<NavItem path="/dichthuat" itemName="Dịch Thuật" icon = {<i className="nav-icon fa-solid fa-house"></i>}/>}
                     <NavItem path="/tddkkc" itemName="Tịnh Độ Đại Kinh" icon = {<i className="nav-icon fa-solid fa-book"></i>}/>
                     <li  onClick={this.viewItem}>
                                 <a className='nav-link1'>
-                                    <i class="nav-icon fa-solid fa-toolbox"></i>
+                                    <i className="nav-icon fa-solid fa-toolbox"></i>
                                     <div className='isShowitemName'>
                                     Tài liệu tham khảo
                                     </div>

@@ -1,6 +1,15 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+// import "@/assets/css/DichthuatHandle.css"
+// import "@/assets/css/DichthuatViewer.css"
+// import "@/assets/css/ItemCard.css"
+// import "@/assets/css/LikedView.css"
+// import "@/assets/css/Login.css"
+// import "@/assets/css/MenuSide.css"
+// import "@/assets/css/NavHeader.css"
+// import "@/assets/css/PageForm.css"
+// import "@/assets/css/WaitingLoad.css"
 
 const inter = Inter({ subsets: ["latin"] });
 
