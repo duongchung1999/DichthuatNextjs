@@ -80,7 +80,8 @@ class NavHeader extends Component {
                     {this.state.flagAdmin&&<NavItem path="/convertText" itemName="Chuyển đổi text" icon = {<i className="nav-icon fa-solid fa-font"></i>}/>}
                     {this.state.flagAdmin&&<NavItem path="/tudiendich" itemName="Từ điển dịch" icon = {<i className="nav-icon fa-solid fa-shuffle"></i>}/>}
                     <NavItem path="/nhidonghocphat" itemName="Nhi đồng học Phật" icon = {<i className="nav-icon fa-solid fa-earth-americas"></i>}/>
-                    <NavItem path="/jiaocheng" itemName="TKPS Gia Ngôn Lục" icon = {<i className="nav-icon fa-solid fa-book-journal-whills"></i>}/>
+                    <NavItem path="/tddkkc" itemName="淨土大經科註" icon = {<i className="nav-icon fa-solid fa-book"></i>}/>
+                    <NavItem path="/jiaocheng" itemName="淨空法師嘉言錄" icon = {<i className="nav-icon fa-solid fa-book-journal-whills"></i>}/>
                     <NavItem path="/pdfGiaotrinh" itemName="PDF TKPS Gia Ngôn Lục" icon = {<i className="nav-icon fa-solid fa-file-pdf"></i>}/>
                     <NavItem path="/hanzi" itemName="Từ điển Hanzi" icon = {<i className="nav-icon fa-solid fa-language"></i>}/>
                 
@@ -113,8 +114,8 @@ class NavHeader extends Component {
                 </div>
                 <ul className='menuSide-column'>
                     <NavItem path="/" itemName="Bảng tin" icon = {<i className="nav-icon fa-solid fa-newspaper"></i>}/>
-                    {this.state.flagLogin&&<NavItem path="/dichthuat" itemName="Dịch Thuật" icon = {<i className="nav-icon fa-solid fa-house"></i>}/>}
-                    <NavItem path="/tddkkc" itemName="Tịnh Độ Đại Kinh" icon = {<i className="nav-icon fa-solid fa-book"></i>}/>
+                    <NavItem path="/dichthuat/dichthuatDetails/tdk2014" itemName="Tịnh Độ Đại Kinh Khoa Chú 2014" icon = {<i className="nav-icon fa-solid fa-book"></i>}/>
+                    {this.state.flagLogin&&<NavItem path="/dichthuat" itemName="Dịch Thuật" icon = {<i className="nav-icon fa-solid fa-pen-to-square"></i>}/>}
                     <li  onClick={this.viewItem}>
                                 <a className='nav-link1'>
                                     <i className="nav-icon fa-solid fa-toolbox"></i>

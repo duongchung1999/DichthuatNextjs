@@ -1,7 +1,7 @@
 "use client"
 import React, { Component } from 'react';
 import DisplayThemeButtons from '@/app/login/LoginScript';
-import'@/app/login/Login.css';
+// import'@/app/login/Login.css';
 import Swal from 'sweetalert2';
 import imgPhat from '@/assets/image/phat3.png'
 import { getContentFromFireBase } from '@/component/firebase/Firebase';

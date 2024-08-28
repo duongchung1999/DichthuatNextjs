@@ -19,6 +19,7 @@ class DichThuatHandle extends Component {
             author: null ,
             imgAuthor: null ,
             id: null ,
+            youtubeId: null ,
             error:null,
             nav:false,
         };
@@ -32,9 +33,9 @@ class DichThuatHandle extends Component {
         });
         // console.log(this.state);
         if(nameState==="youtubeLinkToGetImg"){
-            const id = this.getYoutubeId(event.target.value);
-            this.setState({id});
-            console.log(id);
+            const youtubeId = this.getYoutubeId(event.target.value);
+            this.setState({youtubeId});
+            // console.log(id);
         }
         if(nameState ==="dichthuat"){
             const dichthuat_slug = To_slug(event.target.value);
@@ -48,16 +49,16 @@ class DichThuatHandle extends Component {
     }
     setIdState = () =>{
         if (this.state.youtubeLinkToGetImg){
-            const id = this.getYoutubeId(this.state.youtubeLinkToGetImg);
-            this.setState({id});
-            console.log(id);
+            const youtubeId = this.getYoutubeId(this.state.youtubeLinkToGetImg);
+            this.setState({youtubeId});
+            // console.log(id);
         }
     }
     updateBoDichMoi = async() =>{
         const { dichthuat,dichthuat_slug, youtubeLinkToGetImg, webLink,
-            tieudeTiengTrung, author, imgAuthor, id} = this.state;
+            tieudeTiengTrung, author, imgAuthor, id,youtubeId} = this.state;
 
-        const dichthuatPath = `/users/dichthuat/${dichthuat_slug}`
+        const dichthuatPath = `/users/dichthuat/${id}`
         
         const tieudePath = `${dichthuatPath}/tieude`
         const youtubeLinkToGetImgPath = `${dichthuatPath}/link`
@@ -80,7 +81,7 @@ class DichThuatHandle extends Component {
                 var AddtieudeTiengTrung= await AddDataToFireBaseNoKey(tieudeTiengTrungPath,tieudeTiengTrung)
                 var Addauthor= await AddDataToFireBaseNoKey(authorPath,author)
                 var AddimgAuthor= await AddDataToFireBaseNoKey(imgAuthorPath,imgAuthor)
-                var Addid= await AddDataToFireBaseNoKey(idPath,id)
+                var Addid= await AddDataToFireBaseNoKey(idPath,youtubeId)
     
                 if(!AddyoutubeLinkToGetImg||!AddwebLink||!AddtieudeTiengTrung
                     ||!Addauthor||!AddimgAuthor||!Addid||!AddTieuDe){
@@ -108,12 +109,12 @@ class DichThuatHandle extends Component {
 
     }
     isTieuDeExistInFirebase =async() =>{
-        const { dichthuat_slug, dichthuat} = this.state;
-        const dichthuatPath = `/users/dichthuat/${dichthuat_slug}`
+        const { dichthuat_slug, dichthuat,id} = this.state;
+        const dichthuatPath = `/users/dichthuat/${id}`
         const respond = await this.getInfo(dichthuatPath); 
             if (respond){
                 let error = {
-                    message: `Tên bộ dịch thuật "${dichthuat}" đã tồn tại, vui lòng tạo bộ dịch thuật khác`
+                    message: `Id "${id}" đã tồn tại, vui lòng tạo id khác`
                 };
                 Swal.fire(error.message, "", "info");
                 this.setState({ error });
@@ -136,13 +137,13 @@ class DichThuatHandle extends Component {
                 this.setState({ error });
                 return false;
             }
-        else if (!this.isValidDichThuat(dichthuat)) {
-            let error = {
-                message: `Tên bài dịch "${dichthuat}" không được chứa các ký tự: '.', '#', '$', '[', hoặc ']'`
-            };
-            Swal.fire(error.message, "", "info");
-            this.setState({ error });
-        }
+        // else if (!this.isValidDichThuat(dichthuat)) {
+        //     let error = {
+        //         message: `Tên bài dịch "${dichthuat}" không được chứa các ký tự: '.', '#', '$', '[', hoặc ']'`
+        //     };
+        //     Swal.fire(error.message, "", "info");
+        //     this.setState({ error });
+        // }
         else if (!this.isValidYoutubeLink(youtubeLinkToGetImg)) {
             let error = {
                 message: `Đường link YouTube không hợp lệ "${youtubeLinkToGetImg}"`
@@ -192,6 +193,12 @@ class DichThuatHandle extends Component {
                     <div className='dichthuat-container row row-cols-6 row-cols-xxxxxl-5 row-cols-xxxxl-4 row-cols-xl-3 row-cols-lg-2 gy-6 gx-xxl-2 gx-xl-3 gx-lg-2'>
                         {/* {this.showDichThuat()} */}
                         <DichthuatFormInput
+                            title="ID bộ dịch thuật mới"
+                            name="id"
+                            placeHolder="Nhập ID bộ dịch thuật mới"
+                            onChangeHandle={(event) => this.onChangeHandle(event, "id")}
+                        />
+                        <DichthuatFormInput
                             title="Tiêu đề bộ dịch thuật mới"
                             name="dichthuat"
                             placeHolder="Nhập tiêu đề bộ dịch thuật mới"
@@ -232,7 +239,7 @@ class DichThuatHandle extends Component {
                     </div>
 
 
-                    <div className='dichthuatAdd-View'>
+                    <div className='dichthuatAdd-View row'>
                         <ItemCard
                         webLink={this.state.webLink?this.state.webLink:null}
                         tieudeTiengTrung={this.state.tieudeTiengTrung?this.state.tieudeTiengTrung:null}
@@ -240,7 +247,7 @@ class DichThuatHandle extends Component {
                         imgAuthor={this.state.imgAuthor?this.state.imgAuthor:null}
                         link="#"
                         title={this.state.dichthuat?this.state.dichthuat:null}
-                        img={this.state.id?`https://img.youtube.com/vi/${this.state.id}/sddefault.jpg`:null}
+                        img={this.state.youtubeId?`https://img.youtube.com/vi/${this.state.youtubeId}/sddefault.jpg`:null}
                         alt="IMG Link"
                         />
                         <div className='col-2 dichthuatAdd-button'>

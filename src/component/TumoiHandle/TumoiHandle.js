@@ -133,11 +133,12 @@ class TumoiHandle extends Component {
                     Swal.fire("Vui lòng điền đầy đủ thông tin và thử lại", "", "info");
                     this.setState({ error: { message: "Vui lòng điền đầy đủ thông tin và thử lại" } });
                     return false;
-                } else if (!this.isValidDichThuat(viduItem.vidu)) {
-                    Swal.fire(`Ví dụ không được chứa các ký tự: . # $ [ ]`, "", "info");
-                    this.setState({ error: { message: `Ví dụ không được chứa các ký tự: . # $ [ ]` } });
-                    return false;
-                }
+                } 
+                // else if (!this.isValidDichThuat(viduItem.vidu)) {
+                //     Swal.fire(`Ví dụ không được chứa các ký tự: . # $ [ ]`, "", "info");
+                //     this.setState({ error: { message: `Ví dụ không được chứa các ký tự: . # $ [ ]` } });
+                //     return false;
+                // }
             }
         }
         return true;
