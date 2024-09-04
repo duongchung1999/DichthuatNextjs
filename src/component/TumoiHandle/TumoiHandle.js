@@ -216,7 +216,7 @@ class TumoiHandle extends Component {
                         nghiaVidu: example.m
                     }))
                 }));
-    
+                // console.log(nghiaList)
                 this.setState({ nghiaList, hanviet, pinyin });
             }
         } catch (error) {

@@ -12,7 +12,7 @@ function DichthuatFormInput(props){
                     aria-describedby="helpId"
                     placeholder={props.placeHolder}
                     onChange={props.onChangeHandle}
-                    // value={props.value}
+                    value={props.value}
                     defaultValue={props.defaultValue}
                 />
                 {/* <small id="helpId" className="form-text text-muted">
