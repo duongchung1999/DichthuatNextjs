@@ -92,7 +92,7 @@ export default function DichThuatDetailsClient({ slug }) {
             body={
                 
                 <div>
-                    {renderAddButton()};
+                    {renderAddButton()}
                     <div className='dichthuat-container row row-cols-6 row-cols-xxxxxl-5 row-cols-xxxxl-4 row-cols-xl-3 row-cols-lg-2 gy-6 gx-xxl-2 gx-xl-3 gx-lg-2'>
                         {data.map((dichthuat, index) => {
                             const tieude = dichthuat.tieude;

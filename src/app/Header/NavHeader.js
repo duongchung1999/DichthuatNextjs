@@ -84,6 +84,7 @@ class NavHeader extends Component {
                     <NavItem path="/jiaocheng" itemName="淨空法師嘉言錄" icon = {<i className="nav-icon fa-solid fa-book-journal-whills"></i>}/>
                     <NavItem path="/pdfGiaotrinh" itemName="PDF TKPS Gia Ngôn Lục" icon = {<i className="nav-icon fa-solid fa-file-pdf"></i>}/>
                     <NavItem path="/hanzi" itemName="Từ điển Hanzi" icon = {<i className="nav-icon fa-solid fa-language"></i>}/>
+                    {this.state.flagAdmin&&<NavItem path="/hsk5-tap1.pdf" itemName="HSK5 Tap1" icon = {<i className="nav-icon fa-solid fa-pencil"></i>}/>}
                 
                 </div>
             )

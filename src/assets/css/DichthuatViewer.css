@@ -72,3 +72,16 @@ h4.tumoi-nghia-shower {
     max-height: 90vh;
     overflow-y: auto;
 }
+.phanDich{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+.phanDich .row{
+    width: 100%;
+    margin: 10px 0;
+}
+.cardPhandich{
+    max-height: 90vh;
+    overflow-y: auto;
+}

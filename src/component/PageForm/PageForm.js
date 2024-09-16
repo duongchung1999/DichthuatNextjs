@@ -20,7 +20,7 @@ class PageForm extends Component  {
   }
 
   render (){
-    console.log(this.props.flagAdmin)
+    // console.log(this.props.flagAdmin)
     return (
       <div className="sb-nav-fixed">
         <NavHeader toggleMenuSide={this.toggleMenuSideVisibility} flagLogin={this.props.flagLogin} flagAdmin={this.props.flagAdmin}/>

@@ -133,13 +133,13 @@ class Content extends Component {
                         <div className='col-2' style={{padding:'0'}}>
                             <div className='btnConvert'>
                                 <Button className="btn-content" variant="warning" onClick={this.textConvert}>
-                                    Text Convert
+                                    Chuyển đổi văn bản
                                 </Button>
-                                <Button id="btn-pinyin" variant="warning" onClick={this.pinyinConvert}>
+                                {/* <Button id="btn-pinyin" variant="warning" onClick={this.pinyinConvert}>
                                     Pinyin Convert
-                                </Button>
+                                </Button> */}
                                 <Button className="btn-content" variant="warning" onClick={this.getOneTenthText}>
-                                    Get 1/10 Text
+                                    Cắt đoạn văn
                                 </Button>
                                 
                                 <input
