@@ -19,3 +19,12 @@ export async function generateStaticParams() {
 }
 
 
+
+// async function getSlugList() {
+//     const slugPath = `/users/dichthuat`;
+//     const slugs = await getKeyValueFromFireBase(slugPath);
+//     return Object.keys(slugs);
+// }
+
+
+

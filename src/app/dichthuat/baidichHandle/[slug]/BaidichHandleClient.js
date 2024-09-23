@@ -23,6 +23,7 @@ export default  function BaidichHandleClient({slug}) {
         error: null,
         nav: false,
         noiDungBaiDich:null,
+        textCheck:null,
     });
     // const slug = params.slug;
 
@@ -70,19 +71,28 @@ export default  function BaidichHandleClient({slug}) {
         const youtubeLinkPath = `${dichthuatPath}/link`;
         const tieudeTiengTrungPath = `${dichthuatPath}/tieudeTiengTrung`;
         const tieudeBaihocPath = `${dichthuatPath}/tieude`;
-        const noiDungBaiDichPath = `${dichthuatPath}/noidung`;
-
+    
+        // Sử dụng regex để tách câu và giữ lại dấu câu
+        var sentences = noiDungBaiDich.match(/[^.!?。？！]+[.!?。？！]*/g);
+    
         try {
             if (!isNhapDayDuText() || await isTieuDeExistInFirebase(id)) {
                 return;
             }
+    
+            // Cập nhật từng câu của noiDungBaiDich
+            const sentencePromises = sentences.map((sentence, index) => {
+                const sentencePath = `${dichthuatPath}/noidung/${index + 1}/tiengTrung`;
+                return AddDataToFireBaseNoKey(sentencePath, sentence);
+            });
+    
             await Promise.all([
+                ...sentencePromises,  // Cập nhật tất cả các câu
                 AddDataToFireBaseNoKey(youtubeLinkPath, youtubeLink),
                 AddDataToFireBaseNoKey(tieudeTiengTrungPath, tieudeTiengTrung),
-                AddDataToFireBaseNoKey(tieudeBaihocPath, baidich),
-                AddDataToFireBaseNoKey(noiDungBaiDichPath, noiDungBaiDich)
+                AddDataToFireBaseNoKey(tieudeBaihocPath, baidich)
             ]);
-
+    
             await Swal.fire({
                 position: "center",
                 icon: "success",
@@ -97,6 +107,8 @@ export default  function BaidichHandleClient({slug}) {
             setState(prevState => ({ ...prevState, error: { message: `Lỗi tạo bài mới: ${error.message}` } }));
         }
     };
+    
+    
 
     const isTieuDeExistInFirebase = async (id) => {
         const dichthuatPath = `/users/dichthuat/${slug}/listBaihoc/${id}`;
@@ -154,6 +166,20 @@ export default  function BaidichHandleClient({slug}) {
         const urlParams = new URLSearchParams(new URL(link).search);
         return urlParams.get('list');
     };
+    const processText = () => {
+        const { noiDungBaiDich } = state;
+        var sentences = noiDungBaiDich.split(/([.!?。？！])\s*/);
+        var textCheck = '';
+        for (var i = 0; i < sentences.length; i += 2) {
+            textCheck += sentences[i].trim() + (sentences[i + 1] || '');
+            if (i < sentences.length - 2) {
+                textCheck += '\n';
+            }
+        }
+        setState(prevState => ({ ...prevState, textCheck }));
+        console.log(textCheck)
+        return textCheck;
+    }
 
     const getInfo = async (path) => {
         try {
@@ -233,6 +259,13 @@ export default  function BaidichHandleClient({slug}) {
                                     Add
                                     <i className="fa-solid fa-calendar-plus"></i>
                                 </Button>
+                                <Button variant="danger" onClick={processText} >
+                                    Check
+                                    <i className="fa-solid fa-calendar-plus"></i>
+                                </Button>
+                                <div>
+                                    {state.textCheck||null}
+                                </div>
                             </div>
 
                     </div>
