@@ -30,6 +30,8 @@ export default function DichthuatViewerClient({bodich,baidich}) {
         tuMoiViduPinyins: {},
         hanviets: {},
         baiDich: null,
+        tiengTrungs: {},
+        dichNghias: {},
     });
     const [loading, setLoading] = useState(true);
     const [openTumoiForm, setOpenTumoiForm] = useState(false);
@@ -61,13 +63,18 @@ export default function DichthuatViewerClient({bodich,baidich}) {
         const authorPath = `${bdPath}/author`;
         const imgAuthorPath = `${bdPath}/imgAuthor`;
         const YoutubePath = `${bdPath}/link`;
-        const baidichPath = `${bdPath}/baidich`;
+        const tiengTrungPath = `${bdPath}/tiengTrung`;
+        const dichNghiaPath = `${bdPath}/dichNghia`;
         const datetimePath = `${bdPath}/dateTime`;
         const idPath = `${bdPath}/id`;
         const userImagePath = `${bdPath}/userImage`;
      
-        const { tieude, baiDich,youtubeLink, webLink, tieudeTiengTrung, author, imgAuthor, embedLink} = state;
+        const { tieude, tiengTrungs,dichNghias,youtubeLink, webLink, tieudeTiengTrung, author, imgAuthor, embedLink} = state;
         const currentDateTime = new Date().toISOString();
+
+        const dichNghiaArray = Object.values(dichNghias).filter(dichNghia => dichNghia !== null);
+        // const tiengTrungArray = Object.values(tiengTrungs).filter(tiengTrung => tiengTrung !== null);
+        const tiengTrungsArray = Object.values(tiengTrungs);
         try{
             const id = getYoutubeId(youtubeLink);
             await Promise.all([
@@ -78,11 +85,21 @@ export default function DichthuatViewerClient({bodich,baidich}) {
                 AddDataToFireBaseNoKey(YoutubePath,embedLink),
                 AddDataToFireBaseNoKey(authorPath,author),
                 AddDataToFireBaseNoKey(imgAuthorPath,imgAuthor),
-                AddDataToFireBaseNoKey(baidichPath,baiDich),
+                // AddDataToFireBaseNoKey(baidichPath,baiDich),
                 AddDataToFireBaseNoKey(datetimePath,currentDateTime),
                 AddDataToFireBaseNoKey(idPath,id),
                 AddDataToFireBaseNoKey(userImagePath,userImage)
             ]);
+            await Promise.all(dichNghiaArray.map((dichNghia, index) => {
+                const path = `${dichNghiaPath}/${index}`;
+                AddDataToFireBaseNoKey(path, dichNghia);
+            }));
+
+            await Promise.all(tiengTrungsArray.map((tiengTrung, index) => {
+                const path = `${tiengTrungPath}/${index}`;
+                AddDataToFireBaseNoKey(path, tiengTrung);
+            }));
+            
             await Swal.fire({
                 position: "center",
                 icon: "success",
@@ -144,8 +161,8 @@ export default function DichthuatViewerClient({bodich,baidich}) {
             getValueFromPath(tieudeTiengTrungPath),
             getValueFromPath(authorPath),
             getValueFromPath(imgAuthorPath),
-            getValueFromPath(userDichPath),
-            getValueFromPath(noidungTiengTrungPath),
+            getKeyValueFromFireBase(userDichPath),
+            getKeyValueFromFireBase(noidungTiengTrungPath),
         ]);
     
         const embedLink = youtubeLink ? `https://www.youtube.com/embed/${getYoutubeId(youtubeLink)}` : null;
@@ -179,6 +196,20 @@ export default function DichthuatViewerClient({bodich,baidich}) {
                 }
             }));
         }
+
+        const tiengTrungs = {};
+        const dichNghias = {};
+        if (noiDungBaiDich) {
+            await Promise.all(noiDungBaiDich.map(async (noidung) => {
+                tiengTrungs[noidung.key] = await getValueFromPath(`/${noidungTiengTrungPath}/${noidung.key}/tiengTrung`);
+                
+            }));
+        }
+        if(baiDich){
+            await Promise.all(baiDich.map(async (baidich) => {
+                dichNghias[baidich.key] = await getValueFromPath(`/${userDichPath}/${baidich.key}`);
+            }));
+        }
     
         setState(prevState => ({
             ...prevState,
@@ -201,19 +232,32 @@ export default function DichthuatViewerClient({bodich,baidich}) {
             baiDich,
             embedLink,
             hanviets,
+            tiengTrungs,
+            dichNghias,
         }));
         setLoading(false); 
     };
     
 
-    const luuBaiDich = async () =>{
-        console.log(123)
+    const luuBaiDich = async () => {
         setLoading(true); 
-        const { baiDich} = state;
+        const { baiDich, dichNghias = {} } = state; // Ensure dichNghias is an object (as in your log)
         const user = localStorage.getItem("user");
         const userDichPath = `/users/dichthuat/${bodich}/listBaihoc/${baidich}/${user}/baidich`;
-        try{
-            await AddDataToFireBaseNoKey(userDichPath,baiDich);
+        console.log(dichNghias);
+    
+        try {
+            const dichNghiaArray = Object.values(dichNghias).filter(dichNghia => dichNghia !== null);
+    
+            if (!dichNghiaArray.length) {
+                throw new Error('No valid dichNghias to save.');
+            }
+    
+            await Promise.all(dichNghiaArray.map((dichNghia, index) => {
+                const phanDichPath = `${userDichPath}/${index}`;
+                return AddDataToFireBaseNoKey(phanDichPath, dichNghia);
+            }));
+    
             await Swal.fire({
                 position: "center",
                 icon: "success",
@@ -221,16 +265,17 @@ export default function DichthuatViewerClient({bodich,baidich}) {
                 showConfirmButton: false,
                 timer: 1500
             });
-            
-        }
-        catch (error) {
+    
+        } catch (error) {
+            setLoading(false); 
             console.error('Lỗi tạo bài mới:', error);
-            Swal.fire('Lỗi tạo bài mới: ' + error.message, "", "info");
-        }
-        finally{
+            await Swal.fire('Lỗi tạo bài mới: ' + error.message, "", "info");
+        } finally {
             setLoading(false); 
         }
-    }
+    };
+    
+    
 
     const highlightText = (text, highlight) => {
         const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
@@ -255,7 +300,7 @@ export default function DichthuatViewerClient({bodich,baidich}) {
             baiDich: event.target.value
         }));
     };
-
+   
     const isThemTuMoi = () => {
         setOpenTumoiForm(!openTumoiForm);
     };
@@ -280,21 +325,45 @@ export default function DichthuatViewerClient({bodich,baidich}) {
             [tuMoiKey + '-' + nghiaKey]: false,
         });
     };
-
-    const showNguyenVan = () =>{
-        const {noiDungBaiDich} = state;
-        if (noiDungBaiDich){
+    const onChangeHandlePhanDich = (event, index) => {
+        // console.log(state.dichNghias)
+        setState(prevState => ({
+            ...prevState,
+            dichNghias: {
+                ...prevState.dichNghias,
+                [index]: event.target.value
+            }
+        }));
+    };
+    
+    const showNguyenVan = () => {
+        const { tiengTrungs, dichNghias = [] } = state;
+        const tiengTrungsArray = Object.values(tiengTrungs);
+    
+        if (tiengTrungsArray && tiengTrungsArray.length > 0) {
             return (
-                <div className='noiDungBaiDich col-4'>
-                                 {console.log(noiDungBaiDich)}
-                                <pre>
-                                    {noiDungBaiDich ? noiDungBaiDich : ''}
-                                </pre>
+                <div className=''>
+                    {tiengTrungsArray.map((tiengTrung, index) => (
+                        <div className='phanDich' key={index}>
+                            <div>
+                                {tiengTrung || ''}
                             </div>
-            )
+                            <textarea
+                                value={dichNghias[index] || ''}
+                                onChange={(event) => onChangeHandlePhanDich(event, index)}
+                                placeholder='Nhập bài dịch của bạn'>
+                            </textarea>
+                            <hr/>
+                        </div>
+                    ))}
+                </div>
+            );
+        } else {
+            return null;
         }
-        else return null
-    }
+    };
+    
+    
  
 
     const showTumoi = () => {
@@ -365,7 +434,10 @@ export default function DichthuatViewerClient({bodich,baidich}) {
         } else return null;
     };
 
-    const { tieude, baiDich, webLink, tieudeTiengTrung, author, imgAuthor, embedLink,noiDungBaiDich } = state;
+    const { tieude, baiDich, webLink, tieudeTiengTrung, author,
+         imgAuthor, embedLink,noiDungBaiDich ,
+         tiengTrungs, dichNghias,
+         } = state;
     // console.log(state);
     return (
         <PageForm
@@ -385,19 +457,12 @@ export default function DichthuatViewerClient({bodich,baidich}) {
                             </div>
                             
                         </div>
-                        {noiDungBaiDich&&(
-                            
-                            <div className='noiDungBaiDich col-3'>
-                                 {console.log(noiDungBaiDich)}
-                                <pre>
-                                    {noiDungBaiDich ? noiDungBaiDich : ''}
-                                </pre>
-                            </div>
-                        )}
+                       
+                        
                         
 
                         <div className='col'>
-                            <div className="card border-primary">
+                            <div className="card border-primary cardPhandich">
                                 <div className="card-body">
                                     <div className='' style={{display:'flex', justifyContent:'space-between', marginBottom:'10px'}}>
                                         <h4 className="card-title">Phần Dịch</h4>
@@ -413,11 +478,13 @@ export default function DichthuatViewerClient({bodich,baidich}) {
                                         
                                     </div>
                                     
-                                    <textarea
+                                    {/* <textarea
                                         value={baiDich ? baiDich : ''}
                                         onChange={(event) => onChangeHandle(event)}
                                         placeholder='Nhập bài dịch của bạn'>
-                                    </textarea>
+                                    </textarea> */}
+
+                                    {showNguyenVan()}
                                    
                                 </div>
                             </div>

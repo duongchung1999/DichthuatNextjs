@@ -30,8 +30,6 @@ export default function DichthuatViewerClient({bodich,baidich}) {
         tuMoiViduPinyins: {},
         hanviets: {},
         baiDich: null,
-        tiengTrungs: {},
-        dichNghias: {},
     });
     const [loading, setLoading] = useState(true);
     const [openTumoiForm, setOpenTumoiForm] = useState(false);
@@ -147,7 +145,7 @@ export default function DichthuatViewerClient({bodich,baidich}) {
             getValueFromPath(authorPath),
             getValueFromPath(imgAuthorPath),
             getValueFromPath(userDichPath),
-            getKeyValueFromFireBase(noidungTiengTrungPath),
+            getValueFromPath(noidungTiengTrungPath),
         ]);
     
         const embedLink = youtubeLink ? `https://www.youtube.com/embed/${getYoutubeId(youtubeLink)}` : null;
@@ -181,15 +179,6 @@ export default function DichthuatViewerClient({bodich,baidich}) {
                 }
             }));
         }
-
-        const tiengTrungs = {};
-        const dichNghias = {};
-        if (noiDungBaiDich) {
-            await Promise.all(noiDungBaiDich.map(async (noidung) => {
-                tiengTrungs[noidung.key] = await getValueFromPath(`/${noidungTiengTrungPath}/${noidung.key}/tiengTrung`);
-                dichNghias[noidung.key] = await getValueFromPath(`/${noidungTiengTrungPath}/${noidung.key}/dichNghia`);
-            }));
-        }
     
         setState(prevState => ({
             ...prevState,
@@ -212,8 +201,6 @@ export default function DichthuatViewerClient({bodich,baidich}) {
             baiDich,
             embedLink,
             hanviets,
-            tiengTrungs,
-            dichNghias,
         }));
         setLoading(false); 
     };
@@ -294,35 +281,20 @@ export default function DichthuatViewerClient({bodich,baidich}) {
         });
     };
 
-    const showNguyenVan = () => {
-        const { tiengTrungs } = state;
-        console.log(tiengTrungs);
-        const tiengTrungsArray = Object.values(state.tiengTrungs);
-
-        if (tiengTrungsArray && tiengTrungsArray.length > 0) {
+    const showNguyenVan = () =>{
+        const {noiDungBaiDich} = state;
+        if (noiDungBaiDich){
             return (
-                <div className=''>
-                    {tiengTrungsArray.map((tiengTrung, index) => (
-                        <div className='phanDich' key={index}>
-                            <div className='phanDichDetails row'>
-                                <div className='col-6'>{tiengTrung || ''}</div>
-                                <input
-                                    className='col-6'
-                                    value={baiDich ? baiDich : ''}
-                                    onChange={(event) => onChangeHandle(event)}
-                                    placeholder='Nhập bài dịch của bạn'>
-                                </input>
+                <div className='noiDungBaiDich col-4'>
+                                 {console.log(noiDungBaiDich)}
+                                <pre>
+                                    {noiDungBaiDich ? noiDungBaiDich : ''}
+                                </pre>
                             </div>
-                           <hr/>
-                        </div>
-                    ))}
-                </div>
-            );
-        } else {
-            return null;
+            )
         }
-    };
-    
+        else return null
+    }
  
 
     const showTumoi = () => {
@@ -393,10 +365,7 @@ export default function DichthuatViewerClient({bodich,baidich}) {
         } else return null;
     };
 
-    const { tieude, baiDich, webLink, tieudeTiengTrung, author,
-         imgAuthor, embedLink,noiDungBaiDich ,
-         tiengTrungs, dichNghias,
-         } = state;
+    const { tieude, baiDich, webLink, tieudeTiengTrung, author, imgAuthor, embedLink,noiDungBaiDich } = state;
     // console.log(state);
     return (
         <PageForm
@@ -416,13 +385,20 @@ export default function DichthuatViewerClient({bodich,baidich}) {
                             </div>
                             
                         </div>
-                       
-                        
+                        {noiDungBaiDich&&(
+                            
+                            <div className='noiDungBaiDich col-3'>
+                                 {console.log(noiDungBaiDich)}
+                                <pre>
+                                    {noiDungBaiDich ? noiDungBaiDich : ''}
+                                </pre>
+                            </div>
+                        )}
                         
 
                         <div className='col'>
-                            <div className="card border-primary cardPhandich">
-                                <div className="card-body">
+                            <div className="card border-primary">
+                                <div className="card-body oldTextcss">
                                     <div className='' style={{display:'flex', justifyContent:'space-between', marginBottom:'10px'}}>
                                         <h4 className="card-title">Phần Dịch</h4>
                                         <div style={{display:'flex'}}>
@@ -437,13 +413,11 @@ export default function DichthuatViewerClient({bodich,baidich}) {
                                         
                                     </div>
                                     
-                                    {/* <textarea
+                                    <textarea
                                         value={baiDich ? baiDich : ''}
                                         onChange={(event) => onChangeHandle(event)}
                                         placeholder='Nhập bài dịch của bạn'>
-                                    </textarea> */}
-
-                                    {showNguyenVan()}
+                                    </textarea>
                                    
                                 </div>
                             </div>

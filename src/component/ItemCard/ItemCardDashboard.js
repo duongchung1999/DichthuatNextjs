@@ -147,6 +147,49 @@ const ItemCardDashboard = React.memo((props) => {
         else return null;
     }
 
+    const renderBaidich=()=>{
+        if(props.tiengTrungs){
+            const tiengTrungsArray = Object.values(props.tiengTrungs);
+            // console.log(tiengTrungsArray)
+            const dichNghiaArray = Object.values(props.dichNghias);
+            // console.log(dichNghiaArray)
+            if (tiengTrungsArray.length > 0)
+                {
+                    return (
+                    <div className='itemCard-baiDich'>
+                        {tiengTrungsArray.map((tiengTrung, index) => (
+                                <div key={index} className='textDashboard_container'>
+                                    {console.log(tiengTrung.value)}
+                                    <pre className='tiengTrung_Dashboard'>
+                                        {tiengTrung.value}
+                                    </pre>
+
+                                    <pre className='dichNghia_Dashboard'>
+                                        {props.dichNghias[index]?props.dichNghias[index].value:null}
+                                    </pre>
+                                </div>
+                            ))}
+                    </div>)
+                }
+            else return null;
+            
+        }
+
+        else if(props.baidich)
+        return (
+            <div className='itemCard-baiDich'>
+                {props.img ?
+                    <pre  onDoubleClick={() => isFullTextDoubleClick()}>
+                        {truncateText(props.baidich, 300)}
+                    </pre>
+                    :
+                    <pre>
+                        {props.baidich}
+                    </pre>}
+            </div>
+        )
+    }
+
     return (
         <div className='itemCard-container-dashboard' onClick={props.cardClick} onMouseEnter={props.cardClick}>
             <div className='itemCard-UserName'>
@@ -162,7 +205,7 @@ const ItemCardDashboard = React.memo((props) => {
                 {renderTrash()}
             </div>
 
-            <div className='itemCard-baiDich'>
+            {/* <div className='itemCard-baiDich'>
                 {props.img ?
                     <pre  onDoubleClick={() => isFullTextDoubleClick()}>
                         {truncateText(props.baidich, 300)}
@@ -171,7 +214,8 @@ const ItemCardDashboard = React.memo((props) => {
                     <pre>
                         {props.baidich}
                     </pre>}
-            </div>
+            </div> */}
+            {renderBaidich()}
             {props.img && <Link href={props.link} passHref legacyBehavior>
                 <a className="itemCard-title-dashboard" onClick={props.cardClick}>
                     <Image src={props.img} alt="null" width={500} height={500}/>

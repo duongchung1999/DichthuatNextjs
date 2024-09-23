@@ -58,7 +58,7 @@ class DichThuatHandle extends Component {
         const { dichthuat,dichthuat_slug, youtubeLinkToGetImg, webLink,
             tieudeTiengTrung, author, imgAuthor, id,youtubeId} = this.state;
 
-        const dichthuatPath = `/users/dichthuat/${id}`
+        const dichthuatPath = `/users/dichthuat2/${id}`
         
         const tieudePath = `${dichthuatPath}/tieude`
         const youtubeLinkToGetImgPath = `${dichthuatPath}/link`

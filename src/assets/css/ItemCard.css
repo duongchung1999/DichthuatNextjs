@@ -412,9 +412,25 @@ pre{
     width: 100%;
 }
 
-pre {
-    
+.textDashboard_container{
+    padding: 0 20px;
+    border-radius: 10px;
 }
+
+.textDashboard_container:hover{
+ background-color: #f9efd1;
+}
+
+.tiengTrung_Dashboard  {
+    margin: 0;
+}
+
+.dichNghia_Dashboard{
+    color: #0063d3;
+    margin: 0;
+    padding-bottom: 15px;
+}
+
 @keyframes likeAnimation {
     0%, 100% {
         transform: scale(1);

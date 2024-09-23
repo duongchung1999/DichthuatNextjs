@@ -59,7 +59,7 @@ class Dashboard extends Component {
                 const baivietDatas = await Promise.all(baiviets.map(async (baiviet) => {
                     const baivietKey = `${key}&${baiviet.key}`;
     
-                    const [comments, likes, username, userImage, tieude, tieudeTiengTrung, author, imgAuthor, link, weblink, dateTime, id, baidich] = await Promise.all([
+                    const [comments, likes, username, userImage, tieude, tieudeTiengTrung, author, imgAuthor, link, weblink, dateTime, id, baidich,tiengTrungs,dichNghias] = await Promise.all([
                         getKeyValueFromFireBase(`${dashboardPath}/${key}/${baiviet.key}/comment`),
                         getKeyValueFromFireBase(`${dashboardPath}/${key}/${baiviet.key}/like`),
                         getValueFromPath(`${accountPath}/${key}/name`),
@@ -72,7 +72,9 @@ class Dashboard extends Component {
                         getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/weblink`),
                         getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/dateTime`),
                         getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/id`),
-                        getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/baidich`)
+                        getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/baidich`),
+                        getKeyValueFromFireBase(`${dashboardPath}/${key}/${baiviet.key}/tiengTrung`),
+                        getKeyValueFromFireBase(`${dashboardPath}/${key}/${baiviet.key}/dichNghia`)
                     ]);
     
                     let commentDetails = null;
@@ -133,6 +135,8 @@ class Dashboard extends Component {
                         id,
                         baidich,
                         isLiked, // Add isLiked to the returned data
+                        tiengTrungs,
+                        dichNghias,
                     };
                 }));
     
@@ -159,6 +163,8 @@ class Dashboard extends Component {
             const userImages = {};
             const baidichs = {};
             const isLikedMap = {};
+            const tiengTrungs = {};
+            const dichNghias = {};
     
             allBaivietDatas.forEach(data => {
                 weblinks[data.baivietKey] = data.weblink;
@@ -175,6 +181,9 @@ class Dashboard extends Component {
                 userImages[data.baivietKey] = data.userImage;
                 baidichs[data.baivietKey] = data.baidich;
                 isLikedMap[data.baivietKey] = data.isLiked;
+                tiengTrungs[data.baivietKey] = data.tiengTrungs;
+                dichNghias[data.baivietKey] = data.dichNghias;
+
             });
     
             this.setState({
@@ -195,7 +204,9 @@ class Dashboard extends Component {
                 likes,
                 ids,
                 isLikedMap, // Update the isLikedMap state
-                loading: false
+                loading: false,
+                tiengTrungs,
+                dichNghias,
             });
         } catch (error) {
             this.setState({ error, loading: false });
@@ -230,7 +241,9 @@ class Dashboard extends Component {
                 dateTimes: this.filterOutKey(prevState.dateTimes, baivietKey),
                 comments: this.filterOutKey(prevState.comments, baivietKey),
                 likes: this.filterOutKey(prevState.likes, baivietKey),
-                ids: this.filterOutKey(prevState.ids, baivietKey)
+                ids: this.filterOutKey(prevState.ids, baivietKey),
+                tiengTrungs: this.filterOutKey(prevState.tiengTrungs, baivietKey),
+                dichNghias: this.filterOutKey(prevState.dichNghias, baivietKey)
             }));
         }
     };
@@ -362,7 +375,9 @@ class Dashboard extends Component {
     };
 
     showBaidich = () => {
-        const { datas, baidichs, userImages, usernames, commentTexts, likes, dateTimes, comments, tieudes, tieudeTiengTrungs, ids, isLikedMap } = this.state;
+        const { datas, baidichs, userImages, usernames, commentTexts, likes, dateTimes, comments, 
+            tieudes, tieudeTiengTrungs, ids, isLikedMap,
+            tiengTrungs,dichNghias} = this.state;
     
         if (datas && datas.length > 0) {
             return datas.map((data, index) => {
@@ -388,6 +403,8 @@ class Dashboard extends Component {
                         onChangeHandle={(e) => this.handleCommentChange(baivietKey, e)}
                         likeClick={() => this.likeClick(path, baivietKey, isLikedMap[baivietKey])}
                         isLiked={isLikedMap[baivietKey]}
+                        tiengTrungs={tiengTrungs[baivietKey] || null}
+                        dichNghias={dichNghias[baivietKey] || null}
                     
                     />
                 );
