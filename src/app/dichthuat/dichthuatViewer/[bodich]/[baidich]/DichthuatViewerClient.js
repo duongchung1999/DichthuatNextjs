@@ -455,6 +455,15 @@ export default function DichthuatViewerClient({bodich,baidich}) {
                                 title={tieude ? tieude : null}
                             />
                             </div>
+                            <div style={{display:'flex'}}>
+                                            <Button className='button-css' variant="info" onClick={luuBaiDich}>
+                                                Lưu bài dịch
+                                            </Button>
+
+                                            <Button className='button-css' variant="danger" onClick={publishDashboard}>
+                                                Đăng bài
+                                            </Button>
+                                        </div>
                             
                         </div>
                        
@@ -466,7 +475,7 @@ export default function DichthuatViewerClient({bodich,baidich}) {
                                 <div className="card-body">
                                     <div className='' style={{display:'flex', justifyContent:'space-between', marginBottom:'10px'}}>
                                         <h4 className="card-title">Phần Dịch</h4>
-                                        <div style={{display:'flex'}}>
+                                        {/* <div style={{display:'flex'}}>
                                             <Button className='button-css' variant="info" onClick={luuBaiDich}>
                                                 Lưu bài dịch
                                             </Button>
@@ -474,7 +483,7 @@ export default function DichthuatViewerClient({bodich,baidich}) {
                                             <Button className='button-css' variant="danger" onClick={publishDashboard}>
                                                 Đăng bài
                                             </Button>
-                                        </div>
+                                        </div> */}
                                         
                                     </div>
                                     
