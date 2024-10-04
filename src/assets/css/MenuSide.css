@@ -87,10 +87,6 @@
 .menuSide .menuSide-it-asset:hover{
     height: auto;
 }
-.menuSide .menuSide-it-asset:hover .menuSide-2nd{
-    /* display: flex; */
-}
-
 .menuSide .menuSide-it-asset .menuSide-2nd a:hover{
     background-color: #edf8ff;
     color: #1a1a1a;

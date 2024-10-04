@@ -37,6 +37,19 @@
     padding-top: 60px;
   }
   
+  .document-container{
+    display: flex;
+    flex-direction: column;
+  }
+  .document-container a{
+    color: black;
+    padding: 5px;
+  }
+
+  .document-container a:hover{
+    color: blue;
+    text-decoration: underline;
+  }
  
 
   

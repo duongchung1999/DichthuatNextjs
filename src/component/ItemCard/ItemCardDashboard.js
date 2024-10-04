@@ -8,6 +8,8 @@ import Image from 'next/image';
 
 const ItemCardDashboard = React.memo((props) => {
     const [isFullTextShown, setIsFullTextShown] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false);
+    const MAX_ITEMS = 3; 
     const truncateText = (text, maxLength) => {
         // if (text && text.length > maxLength) {
         //     return (
@@ -147,33 +149,40 @@ const ItemCardDashboard = React.memo((props) => {
         else return null;
     }
 
+
     const renderBaidich=()=>{
-        if(props.tiengTrungs){
+        if (props.tiengTrungs) {
             const tiengTrungsArray = Object.values(props.tiengTrungs);
-            // console.log(tiengTrungsArray)
-            const dichNghiaArray = Object.values(props.dichNghias);
-            // console.log(dichNghiaArray)
-            if (tiengTrungsArray.length > 0)
-                {
-                    return (
-                    <div className='itemCard-baiDich'>
-                        {tiengTrungsArray.map((tiengTrung, index) => (
-                                <div key={index} className='textDashboard_container'>
-                                    {console.log(tiengTrung.value)}
-                                    <pre className='tiengTrung_Dashboard'>
+            // const dichNghiaArray = Object.values(props.dichNghias);
+
+            if (tiengTrungsArray.length > 0) {
+                return (
+                    <div className="itemCard-baiDich" onDoubleClick={()=>setIsExpanded(!isExpanded)}>
+                        {tiengTrungsArray
+                            .slice(0, isExpanded ? tiengTrungsArray.length : MAX_ITEMS)
+                            .map((tiengTrung, index) => (
+                                <div key={index} className="textDashboard_container">
+                                    <pre className="tiengTrung_Dashboard">
                                         {tiengTrung.value}
                                     </pre>
-
-                                    <pre className='dichNghia_Dashboard'>
-                                        {props.dichNghias[index]?props.dichNghias[index].value:null}
+                                    <pre className="dichNghia_Dashboard">
+                                        {props.dichNghias[index] ? props.dichNghias[index].value : null}
                                     </pre>
                                 </div>
                             ))}
-                    </div>)
-                }
-            else return null;
-            
-        }
+                        {!isExpanded && tiengTrungsArray.length > MAX_ITEMS && (
+                            <span 
+                                className="see-more" 
+                                onClick={() => setIsExpanded(true)} 
+                                style={{ cursor: 'pointer', color: 'blue' }}
+                            >
+                                ...xem thêm
+                            </span>
+                        )}
+                    </div>
+                );
+            } else return null;
+        } 
 
         else if(props.baidich)
         return (

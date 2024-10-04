@@ -79,6 +79,7 @@ class NavHeader extends Component {
                     {this.state.flagAdmin&&<NavItem path="/stickynote" itemName="Sticky Notes" icon = {<i className="nav-icon fa-solid fa-file-pen"></i>}/>}
                     {this.state.flagAdmin&&<NavItem path="/convertText" itemName="Chuyển đổi text" icon = {<i className="nav-icon fa-solid fa-font"></i>}/>}
                     {this.state.flagAdmin&&<NavItem path="/tudiendich" itemName="Từ điển dịch" icon = {<i className="nav-icon fa-solid fa-shuffle"></i>}/>}
+                    {this.state.flagAdmin&&<NavItem path="/document" itemName="Documents" icon = {<i className="nav-icon fa-regular fa-folder-open"></i>}/>}
                     <NavItem path="/nhidonghocphat" itemName="Nhi đồng học Phật" icon = {<i className="nav-icon fa-solid fa-earth-americas"></i>}/>
                     <NavItem path="/tddkkc" itemName="淨土大經科註" icon = {<i className="nav-icon fa-solid fa-book"></i>}/>
                     <NavItem path="/jiaocheng" itemName="淨空法師嘉言錄" icon = {<i className="nav-icon fa-solid fa-book-journal-whills"></i>}/>
