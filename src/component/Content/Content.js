@@ -9,6 +9,8 @@ class Content extends Component {
         super(props);
         this.state = {
             divisionNumber: 10, 
+            sokytucat:null,
+            soluongkytu:null,
         };
     }
 
@@ -31,7 +33,7 @@ class Content extends Component {
                         var convert = st.split('=');
                         if (convert.length === 2) {
                             var regex = new RegExp(convert[0].replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g');
-                            modifiedContent = modifiedContent.replace(regex, convert[1]);
+                            modifiedContent = modifiedContent.replace(new RegExp(regex, 'gi'), convert[1]);
                             rightTextbox.value = modifiedContent;
                         }
                     });
@@ -95,7 +97,8 @@ class Content extends Component {
         var text = leftTextbox.value;
 
         var textLength = this.getNumberOfText(text);
-        console.log("Toàn bài: ", textLength, "chữ");
+        this.setState({soluongkytu:textLength});
+        // console.log("Toàn bài: ", textLength, "chữ");
 
         var oneTenthLength = Math.ceil(textLength / this.state.divisionNumber);
         console.log(oneTenthLength);
@@ -107,7 +110,9 @@ class Content extends Component {
             if (lengthOfNewText === oneTenthLength) {
                 var pinyinTextbox = document.querySelector('.content-right');
                 pinyinTextbox.value = oneTenthText;
-                console.log("Bài sau khi cắt: ", this.getNumberOfText(oneTenthText), " chữ");
+                // console.log("Bài sau khi cắt: ", this.getNumberOfText(oneTenthText), " chữ");
+                var sokytucat = this.getNumberOfText(oneTenthText)
+                this.setState({sokytucat});
                 break;
             }
         }
@@ -141,14 +146,39 @@ class Content extends Component {
                                 <Button className="btn-content" variant="warning" onClick={this.getOneTenthText}>
                                     Cắt đoạn văn
                                 </Button>
-                                
+                                <br/>
+                                Nhập ước số cần chia
                                 <input
                                     type="number"
                                     className="form-control"
                                     name="divisionNumber"
                                     aria-describedby="helpId"
-                                    placeholder="Nhập ước số cần chia"
+                                    placeholder="0"
                                     onChange={this.handleDivisionNumberChange}
+                                />
+                                <br/>
+                                Số lượng ký tự toàn bài
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    name="divisionNumber"
+                                    aria-describedby="helpId"
+                                    placeholder="0"
+                                    // onChange={this.handleDivisionNumberChange}
+                                    value={this.state.soluongkytu}
+                                    disabled
+                                />
+                                <br/>
+                                Số lượng ký tự sau khi cắt
+                                 <input
+                                    type="number"
+                                    className="form-control"
+                                    name="divisionNumber"
+                                    aria-describedby="helpId"
+                                    placeholder="0"
+                                    // onChange={this.handleDivisionNumberChange}
+                                    value={this.state.sokytucat}
+                                    disabled
                                 />
                             </div>
                         </div>
