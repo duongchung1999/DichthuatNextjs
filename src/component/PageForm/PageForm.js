@@ -25,6 +25,11 @@ class PageForm extends Component  {
         this.getData();
     }, 10000); 
   }
+
+  componentWillUnmount() {
+    // Hủy interval khi component unmount
+    clearInterval(this.intervalId);
+  }
   getData = async()=>{
     
     const myUser = localStorage.getItem("user");

@@ -45,10 +45,10 @@ class Dashboard extends Component {
             this.getData();
         }, 1000); // 10000ms = 10s
     }
-    // componentWillUnmount() {
-    //     // Hủy interval khi component unmount
-    //     clearInterval(this.intervalId);
-    // }
+    componentWillUnmount() {
+        // Hủy interval khi component unmount
+        clearInterval(this.intervalId);
+    }
 
     getData = async () => {
         this.setState({ loading: true });
@@ -62,6 +62,7 @@ class Dashboard extends Component {
         const accountPath = `/users/account`;
 
         // Xử lý dữ liệu allData
+        if (!allData) return;
         const dashboardData = allData.find(item => item.key === "dashboard");
         const accountData = allData.find(item => item.key === "account");
 

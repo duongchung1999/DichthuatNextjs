@@ -22,7 +22,9 @@ export default function DichThuatDetailsClient({ slug }) {
             getDichThuat();
             isAdmin();
             isLogin();
+          
         }
+
         
     }, [slug]);
     
@@ -37,23 +39,36 @@ export default function DichThuatDetailsClient({ slug }) {
     }
     const getDichThuat = async () => {
         setLoading(true);
+
         const allData = JSON.parse(localStorage.getItem("allData"));
         const dichthuatData = allData.find(item => item.key === "dichthuat");
+        // console.log(dichthuatData)
+        const listBaihocData = dichthuatData.value[slug].listBaihoc;
+        const dichthuatSlugData= dichthuatData.value[slug]
+
         const dichthuatPath = `/users/dichthuat/${slug}/listBaihoc`;
-        const dichthuats = await getKeyValueFromFireBase(dichthuatPath);
+        // const dichthuats = await getKeyValueFromFireBase(dichthuatPath);
+        const dichthuats = Object.entries(listBaihocData).map(([key, value]) => ({ key, value }));
 
         if (dichthuats && dichthuats.length > 0) {
             setDichthuats(dichthuats);
 
             const dataPromises = dichthuats.map(async (dichthuat) => {
                 const key = dichthuat.key;
+                const dataReturn = listBaihocData[key];
+                // console.log(dataReturn);
                 return {
                     key,
-                    tieude: await getValueFromPath(`${dichthuatPath}/${key}/tieude`),
-                    youtubeLinkToGetImg: await getValueFromPath(`${dichthuatPath}/${key}/link`),
-                    tieudeTiengTrung: await getValueFromPath(`${dichthuatPath}/${key}/tieudeTiengTrung`),
-                    author: await getValueFromPath(`/users/dichthuat/${slug}/author`),
-                    imgAuthor: await getValueFromPath(`/users/dichthuat/${slug}/imgAuthor`),
+                    // tieude: await getValueFromPath(`${dichthuatPath}/${key}/tieude`),
+                    // youtubeLinkToGetImg: await getValueFromPath(`${dichthuatPath}/${key}/link`),
+                    // tieudeTiengTrung: await getValueFromPath(`${dichthuatPath}/${key}/tieudeTiengTrung`),
+                    // author: await getValueFromPath(`/users/dichthuat/${slug}/author`),
+                    // imgAuthor: await getValueFromPath(`/users/dichthuat/${slug}/imgAuthor`),
+                    tieude: dataReturn.tieude,
+                    youtubeLinkToGetImg: dataReturn.link,
+                    tieudeTiengTrung: dataReturn.tieudeTiengTrung,
+                    author: dichthuatSlugData.author,
+                    imgAuthor: dichthuatSlugData.imgAuthor,
                 };
             });
 
@@ -71,7 +86,7 @@ export default function DichThuatDetailsClient({ slug }) {
 
     const getYoutubeId = (link) => {
         var yt = link&&link.split('=');
-        console.log(yt);
+        // console.log(yt);
         const videoId = yt[1] ? yt[1].split('&')[0] : "null";
         return videoId;
     };

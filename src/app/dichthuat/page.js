@@ -28,7 +28,13 @@ class DichThuatList extends Component {
     componentDidMount(){
         this.getDichThuat();
         this.isLogin();
+        
     }
+    componentWillUnmount() {
+        // Hủy interval khi component unmount
+        clearInterval(this.intervalId);
+    }
+
     isLogin(){
         const MyUserName = localStorage.getItem("name");
         if(MyUserName) {
@@ -47,19 +53,33 @@ class DichThuatList extends Component {
         try {
             this.setState({ loading: true });
             const convertPath = "/users/dichthuat";
-            const dichthuats = await getKeyValueFromFireBase(convertPath);
+            const allData = JSON.parse(localStorage.getItem("allData"));
+            const dichthuatData = allData.find(item => item.key === "dichthuat");
+
+            // const dichthuats = await getKeyValueFromFireBase(convertPath);
+            const dichthuats = Object.entries(dichthuatData.value).map(([key, value]) => ({ key, value }));
+            console.log(dichthuats)
     
             const dataPromises = dichthuats.map(async (dichthuat) => {
+               
                 const key = dichthuat.key;
                 return {
                     key,
-                    youtubeLinkToGetImg: await getValueFromPath(`/users/dichthuat/${key}/link`),
-                    webLink: await getValueFromPath(`/users/dichthuat/${key}/webLink`),
-                    tieudeTiengTrung: await getValueFromPath(`/users/dichthuat/${key}/tieudeTiengTrung`),
-                    tieude: await getValueFromPath(`/users/dichthuat/${key}/tieude`),
-                    author: await getValueFromPath(`/users/dichthuat/${key}/author`),
-                    imgAuthor: await getValueFromPath(`/users/dichthuat/${key}/imgAuthor`),
-                    id: await getValueFromPath(`/users/dichthuat/${key}/id`),
+                    // youtubeLinkToGetImg: await getValueFromPath(`/users/dichthuat/${key}/link`),
+                    // webLink: await getValueFromPath(`/users/dichthuat/${key}/webLink`),
+                    // tieudeTiengTrung: await getValueFromPath(`/users/dichthuat/${key}/tieudeTiengTrung`),
+                    // tieude: await getValueFromPath(`/users/dichthuat/${key}/tieude`),
+                    // author: await getValueFromPath(`/users/dichthuat/${key}/author`),
+                    // imgAuthor: await getValueFromPath(`/users/dichthuat/${key}/imgAuthor`),
+                    // id: await getValueFromPath(`/users/dichthuat/${key}/id`),
+
+                    youtubeLinkToGetImg: dichthuatData.value[key].link,
+                    webLink: dichthuatData.value[key].webLink,
+                    tieudeTiengTrung: dichthuatData.value[key].tieudeTiengTrung,
+                    tieude: dichthuatData.value[key].tieude,
+                    author: dichthuatData.value[key].author,
+                    imgAuthor: dichthuatData.value[key].imgAuthor,
+                    id: dichthuatData.value[key].id,
                 };
             });
     
@@ -111,16 +131,16 @@ class DichThuatList extends Component {
     }
 
     setDichThuatName = (name) => {
-        console.log("setDichthuatName")
+        // console.log("setDichthuatName")
         localStorage.setItem("dichthuat", name);
     }
 
     showDichThuat = () => {
         const { tieudes, dichthuats, youtubeLinkToGetImgs, webLinks, tieudeTiengTrungs, authors, imgAuthors, ids } = this.state;
-        console.log(this.state)
+        // console.log(this.state)
         if (tieudes && authors && dichthuats.length > 0) {
-            console.log(123)
-            console.log(dichthuats)
+            // console.log(123)
+            // console.log(dichthuats)
             return dichthuats.map((dichthuat, index) => {
                 const webLink = webLinks[dichthuat.key];
                 const tieude = tieudes[dichthuat.key];

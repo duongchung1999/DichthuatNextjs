@@ -126,9 +126,22 @@ export default function DichthuatViewerClient({bodich,baidich}) {
 
     const getData = async () => {
         // await luuBaiDich();
-        setLoading(true); 
-    
         const user = localStorage.getItem("user");
+        setLoading(true); 
+        const allData = JSON.parse(localStorage.getItem("allData"));
+        const dichthuatData = allData.find(item => item.key === "dichthuat");
+        const BodichData = dichthuatData.value[bodich];
+        const BaidichData = dichthuatData.value[bodich].listBaihoc[baidich];
+        const BaidichUserData = dichthuatData.value[bodich].listBaihoc[baidich][user];
+
+        const userTuMoiData = BaidichUserData.tumoi?Object.entries(BaidichUserData.tumoi).map(([key, value]) => ({ key, value })):null;
+        const userBaiDichData = BaidichUserData.baidich?Object.entries(BaidichUserData.baidich).map(([key, value]) => ({ key, value })):null;
+        const noidungTiengTrungData = BaidichData.noidung?Object.entries(BaidichData.noidung).map(([key, value]) => ({ key, value })):null;
+        // const baidichDataKeyValue = Object.entries(BaidichData).map(([key, value]) => ({ key, value }));
+        // const BaidichUserData = baidichDataKeyValue.find(item => item.key === user);
+        // console.log(userBaiDichData)
+
+        
     
         const dichthuatPath = `/users/dichthuat/${bodich}`;
         const baidichPath = `/users/dichthuat/${bodich}/listBaihoc/${baidich}`;
@@ -141,6 +154,9 @@ export default function DichthuatViewerClient({bodich,baidich}) {
         const YoutubePath = `${baidichPath}/link`;
         const userDichPath = `${baidichPath}/${user}/baidich`;
         const userTuMoiPath = `${baidichPath}/${user}/tumoi`;
+
+        
+
     
         const [
             tuMois,
@@ -153,18 +169,32 @@ export default function DichthuatViewerClient({bodich,baidich}) {
             baiDich,
             noiDungBaiDich
         ] = await Promise.all([
-            getKeyValueFromFireBase(userTuMoiPath),
-            getValueFromPath(tieudeBaidichPath),
-            getValueFromPath(YoutubePath),
-            getValueFromPath(weblinkPath),
-            getValueFromPath(tieudeTiengTrungPath),
-            getValueFromPath(authorPath),
-            getValueFromPath(imgAuthorPath),
-            getKeyValueFromFireBase(userDichPath),
-            getKeyValueFromFireBase(noidungTiengTrungPath),
+            // getKeyValueFromFireBase(userTuMoiPath),
+            // getValueFromPath(tieudeBaidichPath),
+            // getValueFromPath(YoutubePath),
+            // getValueFromPath(weblinkPath),
+            // getValueFromPath(tieudeTiengTrungPath),
+            // getValueFromPath(authorPath),
+            // getValueFromPath(imgAuthorPath),
+            // getKeyValueFromFireBase(userDichPath),
+            // getKeyValueFromFireBase(noidungTiengTrungPath),
+
+            userTuMoiData,
+            BaidichData.tieude,
+            BaidichData.link,
+            BaidichData.weblink,
+            BaidichData.tieudeTiengTrung,
+            BodichData.author,
+            BodichData.imgAuthor,
+            userBaiDichData,
+            noidungTiengTrungData,
+            //  getKeyValueFromFireBase(userDichPath),
+            // getKeyValueFromFireBase(noidungTiengTrungPath),
         ]);
     
         const embedLink = youtubeLink ? `https://www.youtube.com/embed/${getYoutubeId(youtubeLink)}` : null;
+
+        
     
         const tuMoiNghiaGets = {};
         const tuMoiNghias = {};
@@ -176,19 +206,39 @@ export default function DichthuatViewerClient({bodich,baidich}) {
         const hanviets = {};
     
         if (tuMois) {
+            // console.log(tuMois);
+            
             await Promise.all(tuMois.map(async (tuMoi) => {
-                tuMoiNghiaGets[tuMoi.key] = await getKeyValueFromFireBase(`/${userTuMoiPath}/${tuMoi.key}/nghia`);
-                tuMoiPinyins[tuMoi.key] = await getValueFromPath(`/${userTuMoiPath}/${tuMoi.key}/pinyin`);
-                hanviets[tuMoi.key] = await getValueFromPath(`/${userTuMoiPath}/${tuMoi.key}/hanviet`);
+
+                const tuMoiNghiaData = tuMois.find(item => item.key === tuMoi.key);
+                // console.log(tuMoiNghiaData.value.nghia);
+                // tuMoiNghiaGets[tuMoi.key] = await getKeyValueFromFireBase(`/${userTuMoiPath}/${tuMoi.key}/nghia`);
+                // tuMoiPinyins[tuMoi.key] = await getValueFromPath(`/${userTuMoiPath}/${tuMoi.key}/pinyin`);
+                // hanviets[tuMoi.key] = await getValueFromPath(`/${userTuMoiPath}/${tuMoi.key}/hanviet`);
+
+                tuMoiNghiaGets[tuMoi.key] = Object.entries(tuMoiNghiaData.value.nghia).map(([key, value]) => ({ key, value }));
+                tuMoiPinyins[tuMoi.key] = tuMoiNghiaData.value.pinyin;
+                hanviets[tuMoi.key] = tuMoiNghiaData.value.hanviet;
+               
                 if (tuMoiNghiaGets[tuMoi.key]) {
                     await Promise.all(tuMoiNghiaGets[tuMoi.key].map(async (tuMoiNghia) => {
-                        tuMoiNghias[tuMoiNghia.key] = await getValueFromPath(`/${userTuMoiPath}/${tuMoi.key}/nghia/${tuMoiNghia.key}/nghia`);
-                        tumoiViduGets[tuMoiNghia.key] = await getKeyValueFromFireBase(`/${userTuMoiPath}/${tuMoi.key}/nghia/${tuMoiNghia.key}/vidu`);
+                        // console.log(tuMoiNghiaGets[tuMoi.key][tuMoiNghia.key].value["nghia"]);
+                        const dataNghiaKey = BaidichUserData.tumoi[tuMoi.key].nghia[tuMoiNghia.key]
+                        // tuMoiNghias[tuMoiNghia.key] = await getValueFromPath(`/${userTuMoiPath}/${tuMoi.key}/nghia/${tuMoiNghia.key}/nghia`);
+                        // tumoiViduGets[tuMoiNghia.key] = await getKeyValueFromFireBase(`/${userTuMoiPath}/${tuMoi.key}/nghia/${tuMoiNghia.key}/vidu`);
+
+                        tuMoiNghias[tuMoiNghia.key] = dataNghiaKey.nghia;
+                        tumoiViduGets[tuMoiNghia.key] = await Object.entries(dataNghiaKey.vidu).map(([key, value]) => ({ key, value }));
+
                         if (tumoiViduGets[tuMoiNghia.key]) {
                             await Promise.all(tumoiViduGets[tuMoiNghia.key].map(async (tuMoiKey) => {
-                                tuMoiViduDichs[tuMoiKey.key] = await getValueFromPath(`/${userTuMoiPath}/${tuMoi.key}/nghia/${tuMoiNghia.key}/vidu/${tuMoiKey.key}/nghia`);
-                                tuMoiVidus[tuMoiKey.key] = await getValueFromPath(`/${userTuMoiPath}/${tuMoi.key}/nghia/${tuMoiNghia.key}/vidu/${tuMoiKey.key}/vidu`);
-                                tuMoiViduPinyins[tuMoiKey.key] = await getValueFromPath(`/${userTuMoiPath}/${tuMoi.key}/nghia/${tuMoiNghia.key}/vidu/${tuMoiKey.key}/pinyin`);
+                                // tuMoiViduDichs[tuMoiKey.key] = await getValueFromPath(`/${userTuMoiPath}/${tuMoi.key}/nghia/${tuMoiNghia.key}/vidu/${tuMoiKey.key}/nghia`);
+                                // tuMoiVidus[tuMoiKey.key] = await getValueFromPath(`/${userTuMoiPath}/${tuMoi.key}/nghia/${tuMoiNghia.key}/vidu/${tuMoiKey.key}/vidu`);
+                                // tuMoiViduPinyins[tuMoiKey.key] = await getValueFromPath(`/${userTuMoiPath}/${tuMoi.key}/nghia/${tuMoiNghia.key}/vidu/${tuMoiKey.key}/pinyin`);
+                            
+                                tuMoiViduDichs[tuMoiKey.key] = dataNghiaKey.vidu[tuMoiKey.key].nghia;
+                                tuMoiVidus[tuMoiKey.key] = dataNghiaKey.vidu[tuMoiKey.key].vidu;
+                                tuMoiViduPinyins[tuMoiKey.key] = dataNghiaKey.vidu[tuMoiKey.key].pinyin;
                             }));
                         }
                     }));
@@ -200,13 +250,20 @@ export default function DichthuatViewerClient({bodich,baidich}) {
         const dichNghias = {};
         if (noiDungBaiDich) {
             await Promise.all(noiDungBaiDich.map(async (noidung) => {
-                tiengTrungs[noidung.key] = await getValueFromPath(`/${noidungTiengTrungPath}/${noidung.key}/tiengTrung`);
+                // console.log(BaidichData.noidung[noidung.key])
+                if(!BaidichData.noidung[noidung.key]) return;
+                // tiengTrungs[noidung.key] = await getValueFromPath(`/${noidungTiengTrungPath}/${noidung.key}/tiengTrung`);
+                tiengTrungs[noidung.key] = BaidichData.noidung[noidung.key].tiengTrung;
                 
             }));
         }
         if(baiDich){
             await Promise.all(baiDich.map(async (baidich) => {
-                dichNghias[baidich.key] = await getValueFromPath(`/${userDichPath}/${baidich.key}`);
+                // dichNghias[baidich.key] = await getValueFromPath(`/${userDichPath}/${baidich.key}`);
+                console.log(baiDich[baidich.key])
+                if(!baiDich[baidich.key]) return;
+                dichNghias[baidich.key] = baiDich[baidich.key].value
+
             }));
         }
     
@@ -596,7 +653,8 @@ export default function DichthuatViewerClient({bodich,baidich}) {
                             </div>
                             <div ref={tumoiHandleRef}>
                             <TumoiHandle 
-                                getDataTumoi={()=>getDataTumoi()}
+                                // getDataTumoi={()=>getDataTumoi()}
+                                getDataTumoi={()=>getData()}
                                 luuBaiDich={()=>luuBaiDich()}
                                 scrollBaidich={()=>scrollBaidich()
                                 }

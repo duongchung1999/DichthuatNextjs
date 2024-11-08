@@ -69,8 +69,8 @@ class TumoiHandle extends Component {
                 Swal.fire("Tạo từ mới thành công", "", "success");
                 this.setState({ nav: true });
                
-                this.props.luuBaiDich();
-                this.props.getDataTumoi();
+                await this.props.luuBaiDich();
+                await this.props.getDataTumoi();
                 this.props.scrollBaidich();
             }
         } catch (error) {
