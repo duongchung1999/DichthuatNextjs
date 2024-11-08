@@ -162,10 +162,10 @@ const ItemCardDashboard = React.memo((props) => {
                             .slice(0, isExpanded ? tiengTrungsArray.length : MAX_ITEMS)
                             .map((tiengTrung, index) => (
                                 <div key={index} className="textDashboard_container">
-                                    <pre className="tiengTrung_Dashboard">
+                                    <pre className="tiengTrung_Dashboard simsun">
                                         {tiengTrung.value}
                                     </pre>
-                                    <pre className="dichNghia_Dashboard">
+                                    <pre className="dichNghia_Dashboard cambria">
                                         {props.dichNghias[index] ? props.dichNghias[index].value : null}
                                     </pre>
                                 </div>
@@ -206,7 +206,7 @@ const ItemCardDashboard = React.memo((props) => {
                     <Image src={props.imgUser ? props.imgUser : userImage} alt="img"
                     width={50} 
                     height={50}/>
-                    <div className='itemCard-UserName-container'>
+                    <div className='itemCard-UserName-container cambria'>
                         <h4 className='username-card'>{props.username}</h4>
                         <p style={{ margin: '0' }}>{formatDateTime(props.dateTime)}</p>
                     </div>
@@ -232,8 +232,8 @@ const ItemCardDashboard = React.memo((props) => {
             </Link>}
 
             <div className='itemCard-content'>
-                {props.img && <h3 className='itemCard-content-title'>{props.title}</h3>}
-                {props.img && <div className='itemCard-content-description'>
+                {props.img && <h3 className='itemCard-content-title cambria'>{props.title}</h3>}
+                {props.img && <div className='itemCard-content-description simsun'>
                     <span>{props.tieudeTiengTrung}</span>
                 </div>}
                 <div className='ItemCard-dashboard-footer'>

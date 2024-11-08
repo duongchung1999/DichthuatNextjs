@@ -25,6 +25,7 @@ export default function DichThuatDetailsClient({ slug }) {
         }
         
     }, [slug]);
+    
     const isLogin =()=>{
         const MyUserName = localStorage.getItem("name");
         if(MyUserName) setFlagLogin(true)
@@ -36,6 +37,8 @@ export default function DichThuatDetailsClient({ slug }) {
     }
     const getDichThuat = async () => {
         setLoading(true);
+        const allData = JSON.parse(localStorage.getItem("allData"));
+        const dichthuatData = allData.find(item => item.key === "dichthuat");
         const dichthuatPath = `/users/dichthuat/${slug}/listBaihoc`;
         const dichthuats = await getKeyValueFromFireBase(dichthuatPath);
 

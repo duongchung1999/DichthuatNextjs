@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import DichthuatFormInput from '@/component/DichthuatFormInput/DichthuatFormInput';
 import { Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
-import { AddDataToFireBaseNoKey } from '@/component/firebase/Firebase';
+import { AddDataToFireBaseNoKey,getValueFromPath } from '@/component/firebase/Firebase';
 import WaitingLoad from '@/component/WaitingLoad/WaitingLoad';
 import axios from 'axios';
 import To_slug from '@/component/ToSlug/ToSlug';
@@ -31,6 +31,17 @@ class TumoiHandle extends Component {
             [nameState]: event.target.value
         });
     }
+    getExistValue = async (path) => {
+        try {
+            const [value] = await Promise.all([
+                getValueFromPath(`${slug}`),
+            ]);
+            console.log(value);
+            return value;
+        } catch (error) {
+            console.error('Error fetching existing values:', error);
+        }
+    };
     
     onChangeHandle = (event, nameState, nghiaIndex, viduIndex) => {
         const newNghiaList = this.state.nghiaList.slice();
@@ -55,11 +66,12 @@ class TumoiHandle extends Component {
                 await this.updateTumoiAtPath(userTuMoiPath, tumoi, nghiaList, hanviet, pinyin);
                 await this.updateTumoiAtPath(tumoiFbPath, tumoi, nghiaList, hanviet, pinyin); // Thêm dòng này để cập nhật lần nữa với tumoiFbPath
     
-                // Swal.fire("Tạo bài mới thành công", "", "success");
+                Swal.fire("Tạo từ mới thành công", "", "success");
                 this.setState({ nav: true });
                
                 this.props.luuBaiDich();
-                this.props.getData();
+                this.props.getDataTumoi();
+                this.props.scrollBaidich();
             }
         } catch (error) {
             console.error('Lỗi tạo từ mới:', error);
@@ -82,8 +94,8 @@ class TumoiHandle extends Component {
             }
             for (let i = 0; i < nghiaList.length; i++) {
                 const nghiaItem = nghiaList[i];
-                const pinyinPath = `${path}/${tumoi}/nghia/${To_slug(nghiaItem.nghia)}/pinyin`;
-                const nghiaPath = `${path}/${tumoi}/nghia/${To_slug(nghiaItem.nghia)}/nghia`;
+                const pinyinPath = `${path}/${tumoi}/nghia/${i}/pinyin`;
+                const nghiaPath = `${path}/${tumoi}/nghia/${i}/nghia`;
     
                 // console.log(pinyinPath);
     
@@ -91,9 +103,9 @@ class TumoiHandle extends Component {
     
                 for (let j = 0; j < nghiaItem.vidus.length; j++) {
                     const viduItem = nghiaItem.vidus[j];
-                    const nghiaviduPath = `${path}/${tumoi}/nghia/${To_slug(nghiaItem.nghia)}/vidu/${To_slug(viduItem.vidu)}/nghia`;
-                    const pinyinViduPath = `${path}/${tumoi}/nghia/${To_slug(nghiaItem.nghia)}/vidu/${To_slug(viduItem.vidu)}/pinyin`;
-                    const viduPath = `${path}/${tumoi}/nghia/${To_slug(nghiaItem.nghia)}/vidu/${To_slug(viduItem.vidu)}/vidu`;
+                    const nghiaviduPath = `${path}/${tumoi}/nghia/${i}/vidu/${j}/nghia`;
+                    const pinyinViduPath = `${path}/${tumoi}/nghia/${i}/vidu/${j}/pinyin`;
+                    const viduPath = `${path}/${tumoi}/nghia/${i}/vidu/${j}/vidu`;
                     // console.log(viduPath);
                     // console.log(pinyinViduPath);
                     await AddDataToFireBaseNoKey(nghiaviduPath, viduItem.nghiaVidu);

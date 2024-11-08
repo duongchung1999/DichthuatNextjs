@@ -41,40 +41,95 @@ class Dashboard extends Component {
 
     componentDidMount() {
         this.getData();
+        this.intervalId = setInterval(() => {
+            this.getData();
+        }, 1000); // 10000ms = 10s
     }
+    // componentWillUnmount() {
+    //     // Hủy interval khi component unmount
+    //     clearInterval(this.intervalId);
+    // }
+
     getData = async () => {
         this.setState({ loading: true });
     
         const myUser = localStorage.getItem("user");
         const MyUserName = localStorage.getItem("name");
+        const allData = JSON.parse(localStorage.getItem("allData"));
+        // console.log(allData);
+       
         const dashboardPath = `/users/dashboard`;
         const accountPath = `/users/account`;
-    
+
+        // Xử lý dữ liệu allData
+        const dashboardData = allData.find(item => item.key === "dashboard");
+        const accountData = allData.find(item => item.key === "account");
+
+        // console.log(accountData.value);
+        var formattedDashboardData = Object.entries(dashboardData.value).map(([key, value]) => ({ key, value }));
+        var formattedAccountData = Object.entries(accountData.value).map(([key, value]) => ({ key, value }));
+       
+        
         try {
-            const datas = await getKeyValueFromFireBase(dashboardPath);
-            const personDatas = await Promise.all(datas.map(async (data) => {
+            // const datas = await getKeyValueFromFireBase(dashboardPath);
+            // console.log(datas)
+            const personDatas = await Promise.all(formattedDashboardData.map(async (data) => {
+                
                 const key = data.key;
-                const baiviets = await getKeyValueFromFireBase(`${dashboardPath}/${key}`);
+
+                // console.log(data.key)
+                const baiviets = Object.entries(data.value).map(([key, value]) => ({ key, value }));
+                // const baiviets = await getKeyValueFromFireBase(`${dashboardPath}/${key}`);
     
                 const baivietDatas = await Promise.all(baiviets.map(async (baiviet) => {
                     const baivietKey = `${key}&${baiviet.key}`;
-    
+                    // console.log(baiviet.value.tieude);
+
+                    var commentDatas = baiviet.value.comment?Object.entries(baiviet.value.comment).map(([key, value]) => ({ key, value })):null;
+                    var likeDatas = baiviet.value.like?Object.entries(baiviet.value.like).map(([key, value]) => ({ key, value })):null;
+                    var tiengTrungDatas = baiviet.value.tiengTrung?Object.entries(baiviet.value.tiengTrung).map(([key, value]) => ({ key, value })):null;
+                    var dichNghiaDatas = baiviet.value.dichNghia?Object.entries(baiviet.value.dichNghia).map(([key, value]) => ({ key, value })):null;
+
+                    // console.log(formattedAccountData);
+                    const nameData= formattedAccountData.find(item => item.key === key);
+                    // console.log(nameData);
+                   
                     const [comments, likes, username, userImage, tieude, tieudeTiengTrung, author, imgAuthor, link, weblink, dateTime, id, baidich,tiengTrungs,dichNghias] = await Promise.all([
-                        getKeyValueFromFireBase(`${dashboardPath}/${key}/${baiviet.key}/comment`),
-                        getKeyValueFromFireBase(`${dashboardPath}/${key}/${baiviet.key}/like`),
-                        getValueFromPath(`${accountPath}/${key}/name`),
-                        getValueFromPath(`${accountPath}/${key}/img`),
-                        getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/tieude`),
-                        getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/tieudeTiengTrung`),
-                        getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/author`),
-                        getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/imgAuthor`),
-                        getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/link`),
-                        getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/weblink`),
-                        getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/dateTime`),
-                        getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/id`),
-                        getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/baidich`),
-                        getKeyValueFromFireBase(`${dashboardPath}/${key}/${baiviet.key}/tiengTrung`),
-                        getKeyValueFromFireBase(`${dashboardPath}/${key}/${baiviet.key}/dichNghia`)
+                        // getKeyValueFromFireBase(`${dashboardPath}/${key}/${baiviet.key}/comment`),
+                        // getKeyValueFromFireBase(`${dashboardPath}/${key}/${baiviet.key}/like`),
+                        commentDatas,
+                        likeDatas,
+
+                        // getValueFromPath(`${accountPath}/${key}/name`),
+                        // getValueFromPath(`${accountPath}/${key}/img`),
+                        nameData.value.name,
+                        nameData.value.img,
+
+
+                        // getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/tieude`),
+                        // getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/tieudeTiengTrung`),
+                        // getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/author`),
+                        // getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/imgAuthor`),
+                        // getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/link`),
+                        // getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/weblink`),
+                        // getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/dateTime`),
+                        // getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/id`),
+                        // getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/baidich`),
+
+                        baiviet.value.tieude,
+                        baiviet.value.tieudeTiengTrung,
+                        baiviet.value.author,
+                        baiviet.value.imgAuthor,
+                        baiviet.value.link,
+                        baiviet.value.weblink,
+                        baiviet.value.dateTime,
+                        baiviet.value.id,
+                        baiviet.value.baidich,
+
+                        tiengTrungDatas,
+                        dichNghiaDatas,
+                        // getKeyValueFromFireBase(`${dashboardPath}/${key}/${baiviet.key}/tiengTrung`),
+                        // getKeyValueFromFireBase(`${dashboardPath}/${key}/${baiviet.key}/dichNghia`)
                     ]);
     
                     let commentDetails = null;
@@ -83,13 +138,22 @@ class Dashboard extends Component {
     
                     if (comments) {
                         commentDetails = await Promise.all(comments.map(async (comment) => {
-                            const userKey = await  getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/comment/${comment.key}/user`);
+                            const commentData= comments.find(item => item.key === comment.key);
+                            // console.log(commentData);
+                            // const userKey = await  getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/comment/${comment.key}/user`);
+                            const userKey = commentData.value.user;
+
+                            const accountCommentData= formattedAccountData.find(item => item.key === userKey);
                             const [username, userImage, cmt, dateTime] = await Promise.all([
                                 
-                                getValueFromPath(`${accountPath}/${userKey}/name`),
-                                getValueFromPath(`${accountPath}/${userKey}/img`),
-                                getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/comment/${comment.key}/cmt`),
-                                getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/comment/${comment.key}/dateTime`)
+                                // getValueFromPath(`${accountPath}/${userKey}/name`),
+                                // getValueFromPath(`${accountPath}/${userKey}/img`),
+                                // getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/comment/${comment.key}/cmt`),
+                                // getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/comment/${comment.key}/dateTime`)
+                                accountCommentData.value.name,
+                                accountCommentData.value.img,
+                                commentData.value.cmt,
+                                commentData.value.dateTime
                             ]);
     
                             return {
@@ -104,12 +168,16 @@ class Dashboard extends Component {
     
                     if (likes) {
                         likeDetails = await Promise.all(likes.map(async (like) => {
+
+                            const likeData= likes.find(item => item.key === like.key);
                             if (like.key === myUser) {
                                 isLiked = true;
                             }
                             const [username, userImage] = await Promise.all([
-                                getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/like/${like.key}/name`),
-                                getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/like/${like.key}/image`)
+                                // getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/like/${like.key}/name`),
+                                // getValueFromPath(`${dashboardPath}/${key}/${baiviet.key}/like/${like.key}/image`)
+                                likeData.value.name,
+                                likeData.value.image
                             ]);
     
                             return {
@@ -213,6 +281,7 @@ class Dashboard extends Component {
             console.error('Error fetching data:', error);
         }
     }
+      
     
 
     removeClick = async (path, baivietKey, isComment = false) => {
@@ -471,7 +540,7 @@ function CommentItem(props) {
         <div className='itemCard-UserName'>
             <div className='itemCard-UserName-2'>
                 <Image src={props.imgUser ? props.imgUser : userImage} alt="img" width={500} height={500} />
-                <div className='itemCard-UserName-container'>
+                <div className='itemCard-UserName-container '>
                     <div className='itemCard-UserName-container-1'>
                         <h6 className='username-card1'>{props.username}</h6>
                         <p>{props.cmt}</p>

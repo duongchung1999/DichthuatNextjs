@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PageForm from '@/component/PageForm/PageForm';
 import { Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
@@ -35,9 +35,8 @@ export default function DichthuatViewerClient({bodich,baidich}) {
     });
     const [loading, setLoading] = useState(true);
     const [openTumoiForm, setOpenTumoiForm] = useState(false);
-    // const { bodich, baidich } = useParams();
-    // const bodich = params.bodich;
-    // const baidich = params.baidich;
+    const tumoiHandleRef = useRef(null); 
+    const baidichRef = useRef(null); 
     const [expandedItems, setExpandedItems] = useState({});
     const [showMeanings, setShowMeanings] = useState({});
     // console.log(bodich,baidich)
@@ -237,6 +236,69 @@ export default function DichthuatViewerClient({bodich,baidich}) {
         }));
         setLoading(false); 
     };
+
+    const getDataTumoi = async () => {
+        // await luuBaiDich();
+        setLoading(true); 
+    
+        const user = localStorage.getItem("user");
+    
+        const baidichPath = `/users/dichthuat/${bodich}/listBaihoc/${baidich}`;
+        const userTuMoiPath = `${baidichPath}/${user}/tumoi`;
+    
+        const [
+            tuMois,
+        ] = await Promise.all([
+            getKeyValueFromFireBase(userTuMoiPath),
+        ]);
+    
+        
+        const tuMoiNghiaGets = {};
+        const tuMoiNghias = {};
+        const tuMoiPinyins = {};
+        const tumoiViduGets = {};
+        const tuMoiVidus = {};
+        const tuMoiViduDichs = {};
+        const tuMoiViduPinyins = {};
+        const hanviets = {};
+    
+        if (tuMois) {
+            await Promise.all(tuMois.map(async (tuMoi) => {
+                tuMoiNghiaGets[tuMoi.key] = await getKeyValueFromFireBase(`/${userTuMoiPath}/${tuMoi.key}/nghia`);
+                tuMoiPinyins[tuMoi.key] = await getValueFromPath(`/${userTuMoiPath}/${tuMoi.key}/pinyin`);
+                hanviets[tuMoi.key] = await getValueFromPath(`/${userTuMoiPath}/${tuMoi.key}/hanviet`);
+                if (tuMoiNghiaGets[tuMoi.key]) {
+                    await Promise.all(tuMoiNghiaGets[tuMoi.key].map(async (tuMoiNghia) => {
+                        tuMoiNghias[tuMoiNghia.key] = await getValueFromPath(`/${userTuMoiPath}/${tuMoi.key}/nghia/${tuMoiNghia.key}/nghia`);
+                        tumoiViduGets[tuMoiNghia.key] = await getKeyValueFromFireBase(`/${userTuMoiPath}/${tuMoi.key}/nghia/${tuMoiNghia.key}/vidu`);
+                        if (tumoiViduGets[tuMoiNghia.key]) {
+                            await Promise.all(tumoiViduGets[tuMoiNghia.key].map(async (tuMoiKey) => {
+                                tuMoiViduDichs[tuMoiKey.key] = await getValueFromPath(`/${userTuMoiPath}/${tuMoi.key}/nghia/${tuMoiNghia.key}/vidu/${tuMoiKey.key}/nghia`);
+                                tuMoiVidus[tuMoiKey.key] = await getValueFromPath(`/${userTuMoiPath}/${tuMoi.key}/nghia/${tuMoiNghia.key}/vidu/${tuMoiKey.key}/vidu`);
+                                tuMoiViduPinyins[tuMoiKey.key] = await getValueFromPath(`/${userTuMoiPath}/${tuMoi.key}/nghia/${tuMoiNghia.key}/vidu/${tuMoiKey.key}/pinyin`);
+                            }));
+                        }
+                    }));
+                }
+            }));
+        }
+
+    
+        setState(prevState => ({
+            ...prevState,
+            
+            tuMoiNghias,
+            tuMoiNghiaGets,
+            tuMoiPinyins,
+            tuMoiViduPinyins,
+            tumoiViduGets,
+            tuMoiVidus,
+            tuMoiViduDichs,
+            tuMois,
+            hanviets,
+        }));
+        setLoading(false); 
+    }
     
 
     const luuBaiDich = async () => {
@@ -244,7 +306,7 @@ export default function DichthuatViewerClient({bodich,baidich}) {
         const { baiDich, dichNghias = {} } = state; // Ensure dichNghias is an object (as in your log)
         const user = localStorage.getItem("user");
         const userDichPath = `/users/dichthuat/${bodich}/listBaihoc/${baidich}/${user}/baidich`;
-        console.log(dichNghias);
+        // console.log(dichNghias);
     
         try {
             const dichNghiaArray = Object.values(dichNghias).filter(dichNghia => dichNghia !== null);
@@ -303,7 +365,16 @@ export default function DichthuatViewerClient({bodich,baidich}) {
    
     const isThemTuMoi = () => {
         setOpenTumoiForm(!openTumoiForm);
+        if (tumoiHandleRef.current) {
+            tumoiHandleRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
     };
+
+    const scrollBaidich =() =>{
+        if (baidichRef.current) {
+            baidichRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
 
     const toggleMeanings = (tuMoiKey) => {
         setShowMeanings({
@@ -443,7 +514,8 @@ export default function DichthuatViewerClient({bodich,baidich}) {
         <PageForm
             body={
                 <div>
-                    <div className='dichthuat-container row'>
+                    <div className='dichthuat-container row'
+                    ref={baidichRef}>
                         <div className='col-5'>
                             <div>
                             <ItemCardYoutube
@@ -509,8 +581,8 @@ export default function DichthuatViewerClient({bodich,baidich}) {
                                     Thêm từ mới
                                 </Button>
                             ) : (
-                                <Button variant="danger" onClick={isThemTuMoi}>
-                                    Hủy
+                                <Button variant="info" onClick={isThemTuMoi}>
+                                    Thêm từ mới
                                 </Button>
                             )}
                         </div>
@@ -522,10 +594,21 @@ export default function DichthuatViewerClient({bodich,baidich}) {
                                     {showTumoi()}
                                 </div>
                             </div>
-                            {openTumoiForm ? (<TumoiHandle 
+                            <div ref={tumoiHandleRef}>
+                            <TumoiHandle 
+                                getDataTumoi={()=>getDataTumoi()}
+                                luuBaiDich={()=>luuBaiDich()}
+                                scrollBaidich={()=>scrollBaidich()
+                                }
+                                />
+                                </div>
+                            {/* {openTumoiForm ? (
+                                <TumoiHandle 
+                                ref={tumoiHandleRef}
                                 getData={getData}
                                 luuBaiDich={()=>luuBaiDich()}
-                                />) : null}
+                                />
+                            ) : null} */}
                         </div>
                     </div>
                     {loading ? (

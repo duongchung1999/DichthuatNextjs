@@ -388,7 +388,7 @@
 .itemCard-baiDich pre{
     white-space: pre-wrap; 
     word-wrap: break-word; 
-    font-family: cursive;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     line-height: 1.6;
     font-size: 20px;
     /* min-height: 80vh;  */
@@ -397,7 +397,7 @@
 pre{
     white-space: pre-wrap; 
     word-wrap: break-word; 
-    font-family: cursive;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     line-height: 1.6;
     font-size: 20px;
     
@@ -429,6 +429,12 @@ pre{
     color: #0063d3;
     margin: 0;
     padding-bottom: 15px;
+}
+.cambria {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif !important;
+}
+.simsun{
+    font-family: simsun !important;
 }
 
 @keyframes likeAnimation {
